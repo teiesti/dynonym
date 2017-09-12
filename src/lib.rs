@@ -3,11 +3,13 @@
 
 extern crate rocket;
 
-#[get("/hello/<name>/<age>")]
-fn hello(name: String, age: u8) -> String {
-    format!("Hello, {} year old named {}!", age, name)
-}
+pub mod routes;
 
 pub fn serve() {
-    rocket::ignite().mount("/", routes![hello]).launch();
+    rocket::ignite()
+        .mount("/", routes![
+            routes::dns::update,
+            routes::ip,
+        ])
+        .launch();
 }
