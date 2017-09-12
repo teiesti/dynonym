@@ -3,6 +3,7 @@
 
 extern crate rocket;
 
+pub mod model;
 pub mod routes;
 
 pub fn serve() {
