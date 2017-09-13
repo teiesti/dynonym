@@ -50,5 +50,6 @@ struct Update {
 
 #[get("/dns/update?<update>")]
 fn update(creds: Credentials, update: Update) -> String {
+    // TODO use the data
     format!("{:?}\n{:?}", creds, update)
 }
