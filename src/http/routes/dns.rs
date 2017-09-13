@@ -5,7 +5,7 @@ use rocket::request::{self, FromRequest, Request};
 use std::net::{Ipv4Addr, Ipv6Addr};
 
 #[derive(Debug)]
-struct Credentials {
+pub struct Credentials {
     user: String,
     password: String
 }
@@ -42,14 +42,14 @@ impl<'a, 'r> FromRequest<'a, 'r> for Credentials {
 }
 
 #[derive(Debug, FromForm)]
-struct Update {
+pub struct Update {
     record: String,
     a: Option<Ipv4Addr>,
     aaaa: Option<Ipv6Addr>,
 }
 
 #[get("/dns/update?<update>")]
-fn update(creds: Credentials, update: Update) -> String {
+pub fn update(creds: Credentials, update: Update) -> String {
     // TODO use the data
     format!("{:?}\n{:?}", creds, update)
 }
