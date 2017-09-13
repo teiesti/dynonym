@@ -5,4 +5,3 @@ extern crate hyper;
 extern crate rocket;
 
 pub mod http;
-pub mod model;
