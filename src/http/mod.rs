@@ -6,6 +6,8 @@ pub fn serve() {
         .mount("/", routes![
             routes::dns::update,
             routes::ip,
+            routes::port,
+            routes::socket,
         ])
         .catch(errors![
             errors::unauthorized,
