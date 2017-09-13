@@ -3,14 +3,5 @@
 
 extern crate rocket;
 
+pub mod http;
 pub mod model;
-pub mod routes;
-
-pub fn serve() {
-    rocket::ignite()
-        .mount("/", routes![
-            routes::dns::update,
-            routes::ip,
-        ])
-        .launch();
-}

@@ -1,5 +1,5 @@
 extern crate dynonym;
 
 fn main() {
-    dynonym::serve();
+    dynonym::http::serve();
 }
