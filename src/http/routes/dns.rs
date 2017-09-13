@@ -1,6 +1,6 @@
-use model::User;
+use model::Credentials;
 
 #[get("/dns/update")]
-fn update(user: User) -> String {
-    format!("{:?}", user)
+fn update(creds: Credentials) -> String {
+    format!("{:?}", creds)
 }

@@ -4,12 +4,12 @@ use rocket::http::Status;
 use rocket::request::{self, FromRequest, Request};
 
 #[derive(Debug)]
-pub struct User {
+pub struct Credentials {
     user: String,
     password: String
 }
 
-impl<'a, 'r> FromRequest<'a, 'r> for User {
+impl<'a, 'r> FromRequest<'a, 'r> for Credentials {
     type Error = ();
 
     fn from_request(req: &'a Request<'r>) -> request::Outcome<Self, Self::Error> {
@@ -30,7 +30,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for User {
                 )
             = Authorization::<Basic>::parse_header(&auth.into()) {
                 return Outcome::Success(
-                    User { user, password }
+                    Self { user, password }
                 )
             }
         }
