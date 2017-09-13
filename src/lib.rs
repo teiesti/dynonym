@@ -1,4 +1,4 @@
-#![feature(plugin)]
+#![feature(custom_derive, plugin)]
 #![plugin(rocket_codegen)]
 
 extern crate hyper;
