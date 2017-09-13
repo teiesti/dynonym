@@ -1,6 +1,6 @@
 use model::User;
 
 #[get("/dns/update")]
-fn update(_user: User) -> String {
-    unimplemented!()
+fn update(user: User) -> String {
+    format!("{:?}", user)
 }

@@ -1,3 +1,4 @@
+pub mod errors;
 pub mod routes;
 
 pub fn serve() {
@@ -5,6 +6,9 @@ pub fn serve() {
         .mount("/", routes![
             routes::dns::update,
             routes::ip,
+        ])
+        .catch(errors![
+            errors::unauthorized,
         ])
         .launch();
 }

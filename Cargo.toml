@@ -4,8 +4,9 @@ version = "0.1.0"
 authors = ["Tobias Stolzmann <tobias.stolzmann@gmail.com>"]
 
 [dependencies]
-rocket = "0.3.2"
-rocket_codegen = "0.3.2"
+# TODO Use Rocket's official version as soon as the errors![] macro bugfix was included!
+rocket = { git = "https://github.com/teiesti/Rocket", branch = "v0.3_fix_errors_macro" }
+rocket_codegen = { git = "https://github.com/teiesti/Rocket", branch = "v0.3_fix_errors_macro" }
 
 [[bin]]
 name = "dynonym"
