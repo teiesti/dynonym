@@ -2,8 +2,10 @@
 name = "dynonym"
 version = "0.1.0"
 authors = ["Tobias Stolzmann <tobias.stolzmann@gmail.com>"]
+description = "A minimalistic HTTP server processing DDNS update requests"
 
 [dependencies]
+clap = "2"
 hyper = "0.11"
 # TODO Use Rocket's official version as soon as the errors![] macro bugfix was included!
 rocket = { git = "https://github.com/teiesti/Rocket", branch = "v0.3_fix_errors_macro" }
