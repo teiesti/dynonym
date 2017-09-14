@@ -11,6 +11,9 @@ hyper = "0.11"
 # TODO Use Rocket's official version as soon as the errors![] macro bugfix was included!
 rocket = { git = "https://github.com/teiesti/Rocket", branch = "v0.3_fix_errors_macro" }
 rocket_codegen = { git = "https://github.com/teiesti/Rocket", branch = "v0.3_fix_errors_macro" }
+serde = "1"
+serde_derive = "1"
+toml = "0.4"
 
 [[bin]]
 name = "dynonym"
