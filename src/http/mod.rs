@@ -10,7 +10,12 @@ pub fn serve() {
             routes::socket,
         ])
         .catch(errors![
+            errors::bad_request,
             errors::unauthorized,
+            errors::forbidden,
+            errors::not_found,
+            errors::internal_server_error,
+            errors::not_implemented,
         ])
         .launch();
 }
