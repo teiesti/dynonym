@@ -8,28 +8,26 @@ pub fn handle() {
             .author(crate_authors!("\n"))
             .about(crate_description!())
 
-            .setting(AppSettings::ColoredHelp)
-            .setting(AppSettings::GlobalVersion)
-            //.setting(AppSettings::SubcommandRequired)
-            .setting(AppSettings::SubcommandRequiredElseHelp)
-            //.setting(AppSettings::VersionlessSubcommands)
+            .global_setting(AppSettings::ColoredHelp)
+            .global_setting(AppSettings::GlobalVersion)
+            //.global_setting(AppSettings::SubcommandRequired)
+            .global_setting(AppSettings::SubcommandRequiredElseHelp)
+            //.global_setting(AppSettings::VersionlessSubcommands)
+
 
             .subcommand(
                 SubCommand::with_name("dns")
                     .about("Manually manages dynamic DNS resource records")
-                    .setting(AppSettings::ColoredHelp)
             )
 
             .subcommand(
                 SubCommand::with_name("serve")
                     .about("Starts the server")
-                    .setting(AppSettings::ColoredHelp)
             )
 
             .subcommand(
                 SubCommand::with_name("user")
                     .about("Manages users allowed to use the web frontend")
-                    .setting(AppSettings::ColoredHelp)
             )
         ;
 
