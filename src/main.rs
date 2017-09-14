@@ -1,5 +1,5 @@
 extern crate dynonym;
 
 fn main() {
-    dynonym::cli::handle()
+    dynonym::cli::run()
 }
