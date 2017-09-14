@@ -17,15 +17,21 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
 
         .global_setting(AppSettings::ColoredHelp)
         .global_setting(AppSettings::GlobalVersion)
-        //.global_setting(AppSettings::SubcommandRequired)
-        .global_setting(AppSettings::SubcommandRequiredElseHelp)
         //.global_setting(AppSettings::VersionlessSubcommands)
+
+        //.setting(AppSettings::SubcommandRequired)
+        .setting(AppSettings::SubcommandRequiredElseHelp)
 
         .subcommand(dns::setup())
         .subcommand(serve::setup())
         .subcommand(user::setup())
 }
 
-pub fn call(_args: &ArgMatches) {
-    unimplemented!()
+pub fn call(args: &ArgMatches) {
+    match args.subcommand() {
+        ("dns",     Some(args)) =>   dns::call(args),
+        ("serve",   Some(args)) => serve::call(args),
+        ("user",    Some(args)) =>  user::call(args),
+        _                       =>    unreachable!(),
+    }
 }

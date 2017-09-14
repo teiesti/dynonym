@@ -6,5 +6,5 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
 }
 
 pub fn call(_args: &ArgMatches) {
-    unimplemented!()
+    ::http::serve();
 }
