@@ -2,11 +2,21 @@ pub mod dns;
 pub mod serve;
 pub mod user;
 
+use errors::*;
+
 use clap::{App, AppSettings, ArgMatches};
 
 pub fn run() {
+    // Parse arguments
     let args = setup().get_matches();
-    call(&args);
+
+    // Run command
+    let result = call(&args);
+
+    // Handle error, if necessary
+    if let Err(err) = result {
+        handle(&err);
+    }
 }
 
 pub fn setup<'a, 'b>() -> App<'a, 'b> {
@@ -27,11 +37,31 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
         .subcommand(user::setup())
 }
 
-pub fn call(args: &ArgMatches) {
+pub fn call(args: &ArgMatches) -> Result<()> {
     match args.subcommand() {
         ("dns",     Some(args)) =>   dns::call(args),
         ("serve",   Some(args)) => serve::call(args),
         ("user",    Some(args)) =>  user::call(args),
         _                       =>    unreachable!(),
     }
+}
+
+pub fn handle(err: &Error) {
+    use std::io::Write;
+    let stderr = &mut ::std::io::stderr();
+    let errmsg = "Error writing to stderr";
+
+    // TODO print "error:" in red
+    writeln!(stderr, "error: {}", err).expect(errmsg);
+
+    for err in err.iter().skip(1) {
+        writeln!(stderr, "caused by: {}", err).expect(errmsg);
+    }
+
+    // The backtrace is not always generated. Try to run with `RUST_BACKTRACE=1`.
+    if let Some(backtrace) = err.backtrace() {
+        writeln!(stderr, "backtrace: {:?}", backtrace).expect(errmsg);
+    }
+
+    ::std::process::exit(1);
 }
