@@ -9,15 +9,19 @@ bcrypt = "0.1"
 clap = "2"
 error-chain = "0.11"
 hyper = "0.11"
-# TODO Use Rocket's official version as soon as the errors![] macro bugfix was included!
-rocket = { git = "https://github.com/teiesti/Rocket", branch = "v0.3_fix_errors_macro" }
-rocket_codegen = { git = "https://github.com/teiesti/Rocket", branch = "v0.3_fix_errors_macro" }
+rocket = "0.3"
+rocket_codegen = "0.3"
 serde = "1"
 serde_derive = "1"
 toml = "0.4"
 
 [dev-dependencies]
 tempfile = "2"
+
+[patch.crates-io]
+# TODO Remove as soon as the errors![] macro bugfix was included in Rocket!
+rocket = { git = "https://github.com/teiesti/Rocket", branch = "v0.3_fix_errors_macro" }
+rocket_codegen = { git = "https://github.com/teiesti/Rocket", branch = "v0.3_fix_errors_macro" }
 
 [[bin]]
 name = "dynonym"
