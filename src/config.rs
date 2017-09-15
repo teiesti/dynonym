@@ -1,14 +1,14 @@
 use errors::*;
 
-use std::collections::BTreeSet;
+use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 use toml;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Config {
-    users: BTreeSet<User>,
+    pub users: HashMap<String, UserSetting>,
 }
 
 impl Config {
@@ -44,30 +44,42 @@ impl Config {
 
         Ok(())
     }
+
+    // TODO keep this method?
+    pub fn user(&self, user: &str) -> Option<&UserSetting> {
+        self.users.get(user)
+    }
 }
 
-#[derive(Debug, Deserialize, Eq, PartialEq, Serialize, Ord, PartialOrd)]
-pub struct User {
-    user: String,
-    pw_hash: String,
-    records: BTreeSet<String>,
+#[derive(Debug, Deserialize, Serialize)]
+pub struct UserSetting {
+    pub password: Hash,
+    pub records: HashSet<String>,
 }
 
-impl User {
-    pub fn new<S, T>(user: S, pw: T) -> Self where
-        S: Into<String>,
-        T: AsRef<str>
-    {
-        use bcrypt::{hash, DEFAULT_COST};
+impl UserSetting {
+    pub fn with_password(pw: &str) -> Self {
         Self {
-            user:    user.into(),
-            pw_hash: hash(pw.as_ref(), DEFAULT_COST).unwrap(),
-            records: BTreeSet::new(),
+            password: pw.into(),
+            records: HashSet::new(),
         }
     }
+}
 
-    pub fn has_pw<S: AsRef<str>>(&self, pw: S) -> bool {
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct Hash(String);
+
+impl Hash {
+    pub fn is(&self, plain: &str) -> bool {
         use bcrypt::verify;
-        verify(pw.as_ref(), &self.pw_hash).unwrap()
+        verify(plain, &self.0).unwrap()
+    }
+}
+
+impl<'a> From<&'a str> for Hash {
+    fn from(plain: &'a str) -> Self {
+        use bcrypt::{hash, DEFAULT_COST};
+        let hash = hash(plain, DEFAULT_COST).unwrap();
+        Hash(hash)
     }
 }
