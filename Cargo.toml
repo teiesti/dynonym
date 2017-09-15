@@ -16,6 +16,9 @@ serde = "1"
 serde_derive = "1"
 toml = "0.4"
 
+[dev-dependencies]
+tempfile = "2"
+
 [[bin]]
 name = "dynonym"
 doc = false

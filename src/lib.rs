@@ -6,6 +6,7 @@ extern crate bcrypt;
 #[macro_use] extern crate error_chain;
 extern crate hyper;
 #[macro_use] extern crate serde_derive;
+#[cfg(test)] extern crate tempfile;
 extern crate toml;
 extern crate rocket;
 

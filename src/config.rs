@@ -83,3 +83,96 @@ impl<'a> From<&'a str> for Hash {
         Hash(hash)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn config_default() {
+        let config = Config::default();
+        assert!(config.users.is_empty());
+        // TODO test other fields
+    }
+
+    #[test]
+    fn config_add_one_user() {
+        // Create an empty config
+        let mut config = Config::default();
+        assert!(config.users.is_empty());
+        assert!(config.user("tobias").is_none());
+
+        // Add a user
+        config.users.insert("tobias".into(), UserSetting::with_password("1234"));
+        assert!(config.users.len() == 1);
+        assert!(config.user("tobias").is_some());
+        assert!(config.user("sebastian").is_none());
+    }
+
+    #[test]
+    fn config_add_two_users() {
+        // Create config with one user
+        let mut config = Config::default();
+        config.users.insert("tobias".into(), UserSetting::with_password("1234"));
+
+        // Add another user
+        config.users.insert("sebastian".into(), UserSetting::with_password("4321"));
+        assert!(config.users.len() == 2);
+        assert!(config.user("tobias").is_some());
+        assert!(config.user("sebastian").is_some());
+        assert!(config.user("stolzmann").is_none());
+    }
+
+    #[test]
+    fn config_add_existing_user() {
+        // Create config with one user
+        let mut config = Config::default();
+        config.users.insert("tobias".into(), UserSetting::with_password("1234"));
+
+        // Insert a user with the same name but different password
+        let old = config.users.insert("tobias".into(), UserSetting::with_password("4321"));
+        assert!(config.users.len() == 1);
+        assert!(config.user("tobias").unwrap().password.is("4321"));
+        assert!(old.unwrap().password.is("1234"));
+    }
+
+    #[test]
+    fn config_file() {
+        use tempfile::NamedTempFile;
+
+        // Create config
+        let mut config = Config::default();
+        config.users.insert("tobias".into(), UserSetting::with_password("1234"));
+        config.users.insert("sebastian".into(), UserSetting::with_password("4321"));
+
+        // Save
+        let file = NamedTempFile::new().unwrap();
+        let path = file.path();
+        config.save(path).unwrap();
+
+        // Load
+        let config = Config::load(path).unwrap();
+        assert!(config.users.len() == 2);
+        assert!(config.user("tobias").unwrap().password.is("1234"));
+        assert!(config.user("sebastian").unwrap().password.is("4321"));
+    }
+
+    #[test]
+    fn hash_eq() {
+        let h: Hash = "foo".into();
+        assert!(h.is("foo"));
+    }
+
+    #[test]
+    fn hash_ne() {
+        let h: Hash = "foo".into();
+        assert!(!h.is("bar"));
+    }
+
+    #[test]
+    fn hash_salt() {
+        let h1: Hash = "foo".into();
+        let h2: Hash = "foo".into();
+        assert!(h1 != h2);  // different salts!
+    }
+}
