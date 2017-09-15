@@ -6,7 +6,7 @@ use errors::*;
 
 use clap::{App, AppSettings, ArgMatches};
 
-pub fn run() {
+pub fn main() {
     // Parse arguments
     let args = setup().get_matches();
 
