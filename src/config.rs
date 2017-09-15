@@ -54,24 +54,20 @@ pub struct User {
 }
 
 impl User {
-    pub fn new<S, T, U>(user: S, pw: T) -> Self where
+    pub fn new<S, T>(user: S, pw: T) -> Self where
         S: Into<String>,
-        T: Into<U>,
-        U: AsRef<str>
+        T: AsRef<str>
     {
         use bcrypt::{hash, DEFAULT_COST};
         Self {
             user:    user.into(),
-            pw_hash: hash(pw.into().as_ref(), DEFAULT_COST).unwrap(),
+            pw_hash: hash(pw.as_ref(), DEFAULT_COST).unwrap(),
             records: BTreeSet::new(),
         }
     }
 
-    pub fn has_pw<S, T>(&self, pw: S) -> bool where
-        S: Into<T>,
-        T: AsRef<str>
-    {
+    pub fn has_pw<S: AsRef<str>>(&self, pw: S) -> bool {
         use bcrypt::verify;
-        verify(pw.into().as_ref(), &self.pw_hash).unwrap()
+        verify(pw.as_ref(), &self.pw_hash).unwrap()
     }
 }
