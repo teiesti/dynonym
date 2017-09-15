@@ -5,6 +5,7 @@ authors = ["Tobias Stolzmann <tobias.stolzmann@gmail.com>"]
 description = "A minimalistic HTTP server processing DDNS update requests"
 
 [dependencies]
+bcrypt = "0.1"
 clap = "2"
 error-chain = "0.11"
 hyper = "0.11"
