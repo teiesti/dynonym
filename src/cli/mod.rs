@@ -4,7 +4,7 @@ pub mod user;
 
 use errors::*;
 
-use clap::{App, AppSettings, ArgMatches};
+use clap::{App, AppSettings, Arg, ArgMatches};
 
 pub fn main() {
     // Parse arguments
@@ -31,6 +31,30 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
 
         //.setting(AppSettings::SubcommandRequired)
         .setting(AppSettings::SubcommandRequiredElseHelp)
+
+        .arg(
+            Arg::with_name("config")
+                .short("c")
+                .long("conf")
+                .alias("config")
+                .value_name("FILE")
+                .help("Sets a custom config file")
+                .takes_value(true)
+                .default_value(
+                    concat!(crate_name!(), ".conf")
+                )
+        )
+        .arg(
+            Arg::with_name("pid")
+                .short("p")
+                .long("pid")
+                .value_name("FILE")
+                .help("Sets a custom pid file")
+                .takes_value(true)
+                .default_value(
+                    concat!(crate_name!(), ".pid")
+                )
+        )
 
         .subcommand(dns::setup())
         .subcommand(serve::setup())
