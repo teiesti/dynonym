@@ -33,7 +33,7 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
         .setting(AppSettings::SubcommandRequiredElseHelp)
 
         .arg(
-            Arg::with_name("config")
+            Arg::with_name("conf")
                 .short("c")
                 .long("conf")
                 .alias("config")
