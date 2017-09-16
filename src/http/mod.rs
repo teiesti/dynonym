@@ -1,7 +1,9 @@
 pub mod errors;
 pub mod routes;
 
-pub fn serve() {
+use state::State;
+
+pub fn serve(state: State) {
     ::rocket::ignite()
         .mount("/", routes![
             routes::dns::update,
@@ -17,5 +19,6 @@ pub fn serve() {
             errors::internal_server_error,
             errors::not_implemented,
         ])
+        .manage(state)
         .launch();
 }

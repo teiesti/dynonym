@@ -3,6 +3,7 @@ pub mod serve;
 pub mod user;
 
 use errors::*;
+use state::{State, StateBuilder};
 
 use clap::{App, AppSettings, Arg, ArgMatches};
 
@@ -11,7 +12,7 @@ pub fn main() {
     let args = setup().get_matches();
 
     // Run command
-    let result = call(&args);
+    let result = call(&args, State::build());
 
     // Handle error, if necessary
     if let Err(err) = result {
@@ -61,11 +62,11 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
         .subcommand(user::setup())
 }
 
-pub fn call(args: &ArgMatches) -> Result<()> {
+pub fn call(args: &ArgMatches, state: StateBuilder) -> Result<()> {
     match args.subcommand() {
-        ("dns",     Some(args)) =>   dns::call(args),
-        ("serve",   Some(args)) => serve::call(args),
-        ("user",    Some(args)) =>  user::call(args),
+        ("dns",     Some(args)) =>   dns::call(args, state),
+        ("serve",   Some(args)) => serve::call(args, state),
+        ("user",    Some(args)) =>  user::call(args, state),
         _                       =>    unreachable!(),
     }
 }

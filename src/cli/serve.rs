@@ -1,4 +1,5 @@
 use errors::*;
+use state::StateBuilder;
 
 use clap::{App, ArgMatches, SubCommand};
 
@@ -7,7 +8,7 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
         .about("Starts the server")
 }
 
-pub fn call(_args: &ArgMatches) -> Result<()> {
-    ::http::serve();
+pub fn call(_args: &ArgMatches, state: StateBuilder) -> Result<()> {
+    ::http::serve(state.finalize());
     Ok(())
 }
