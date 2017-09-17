@@ -33,10 +33,10 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
         .setting(AppSettings::SubcommandRequiredElseHelp)
 
         .arg(
-            Arg::with_name("conf")
+            Arg::with_name("config")
                 .short("c")
-                .long("conf")
-                .alias("config")
+                .long("config")
+                .alias("conf")
                 .value_name("FILE")
                 .help("Sets a custom config file")
                 .takes_value(true)
@@ -45,14 +45,14 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
                 )
         )
         .arg(
-            Arg::with_name("pid")
-                .short("p")
-                .long("pid")
+            Arg::with_name("lock")
+                .short("l")
+                .long("lock")
                 .value_name("FILE")
-                .help("Sets a custom pid file")
+                .help("Sets a custom lock file")
                 .takes_value(true)
                 .default_value(
-                    concat!(crate_name!(), ".pid")
+                    concat!(crate_name!(), ".lock")
                 )
         )
 
