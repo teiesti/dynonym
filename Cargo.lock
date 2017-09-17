@@ -6,6 +6,7 @@ dependencies = [
  "clap 2.26.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "error-chain 0.11.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "hyper 0.11.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.30 (registry+https://github.com/rust-lang/crates.io-index)",
  "rocket 0.3.2 (git+https://github.com/teiesti/Rocket?branch=v0.3_fix_errors_macro)",
  "rocket_codegen 0.3.2 (git+https://github.com/teiesti/Rocket?branch=v0.3_fix_errors_macro)",
  "serde 1.0.14 (registry+https://github.com/rust-lang/crates.io-index)",
