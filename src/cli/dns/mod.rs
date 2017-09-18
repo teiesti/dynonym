@@ -1,5 +1,6 @@
 pub mod update;
 
+use config::Config;
 use errors::*;
 
 use clap::{App, ArgMatches, SubCommand};
@@ -11,6 +12,6 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
         .subcommand(update::setup())
 }
 
-pub fn call(_args: &ArgMatches) -> Result<()> {
+pub fn call(_args: &ArgMatches, _config: Config) -> Result<()> {
     unimplemented!()
 }

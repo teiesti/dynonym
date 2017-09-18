@@ -1,3 +1,4 @@
+use config::Config;
 use errors::*;
 
 use clap::{App, ArgMatches, SubCommand};
@@ -7,7 +8,7 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
         .about("Starts the server")
 }
 
-pub fn call(_args: &ArgMatches) -> Result<()> {
+pub fn call(_args: &ArgMatches, _config: Config) -> Result<()> {
     ::http::serve();
     Ok(())
 }

@@ -1,3 +1,4 @@
+use config::Config;
 use errors::*;
 
 use clap::{App, Arg, ArgMatches, SubCommand};
@@ -20,6 +21,6 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
         )
 }
 
-pub fn call(_args: &ArgMatches) -> Result<()> {
+pub fn call(_args: &ArgMatches, _config: Config) -> Result<()> {
     unimplemented!()
 }

@@ -3,6 +3,7 @@ pub mod auth;
 pub mod pw;
 pub mod rm;
 
+use config::Config;
 use errors::*;
 
 use clap::{App, ArgMatches, SubCommand};
@@ -17,6 +18,6 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
         .subcommand(rm::setup())
 }
 
-pub fn call(_args: &ArgMatches) -> Result<()> {
+pub fn call(_args: &ArgMatches, _config: Config) -> Result<()> {
     unimplemented!()
 }

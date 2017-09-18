@@ -2,6 +2,7 @@ pub mod dns;
 pub mod serve;
 pub mod user;
 
+use config::Config;
 use errors::*;
 use lock::Lock;
 
@@ -72,11 +73,18 @@ pub fn call(args: &ArgMatches) -> Result<()> {
             .into()
     )?.handle_sigint()?;
 
+    // Load config
+    let config = Config::load(
+        args
+            .value_of("config")
+            .unwrap()
+    )?;
+
     // Match and execute a subcommand
     match args.subcommand() {
-        ("dns",     Some(args)) =>   dns::call(args),
-        ("serve",   Some(args)) => serve::call(args),
-        ("user",    Some(args)) =>  user::call(args),
-        _                       =>    unreachable!(),
+        ("dns",     Some(args)) =>   dns::call(args, config),
+        ("serve",   Some(args)) => serve::call(args, config),
+        ("user",    Some(args)) =>  user::call(args, config),
+        _                       =>            unreachable!(),
     }
 }
