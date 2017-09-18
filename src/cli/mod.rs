@@ -70,7 +70,7 @@ pub fn call(args: &ArgMatches) -> Result<()> {
             .value_of("lock")
             .unwrap()
             .into()
-    )?.handle_sigint();
+    )?.handle_sigint()?;
 
     // Match and execute a subcommand
     match args.subcommand() {
