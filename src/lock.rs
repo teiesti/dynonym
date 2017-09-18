@@ -36,6 +36,7 @@ impl Lock {
         let twin = self.clone();
 
         // Setup SIGINT handler
+        // TODO Replace ctrlc by tokio-signal?!
         ::ctrlc::set_handler(move || {
             if let Err(err) = twin.release_ref() {
                 handle(&err);
