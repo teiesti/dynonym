@@ -3,6 +3,7 @@
 
 extern crate bcrypt;
 #[macro_use] extern crate clap;
+extern crate ctrlc;
 #[macro_use] extern crate error_chain;
 extern crate hyper;
 extern crate libc;

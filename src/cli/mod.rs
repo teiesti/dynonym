@@ -3,6 +3,7 @@ pub mod serve;
 pub mod user;
 
 use errors::*;
+use lock::Lock;
 
 use clap::{App, AppSettings, Arg, ArgMatches};
 
@@ -62,6 +63,16 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
 }
 
 pub fn call(args: &ArgMatches) -> Result<()> {
+    // Create a lock
+    // Note: The lock is auto-released when _lock goes out of scope!
+    let _lock = Lock::create(
+        args
+            .value_of("lock")
+            .unwrap()
+            .into()
+    )?.handle_sigint();
+
+    // Match and execute a subcommand
     match args.subcommand() {
         ("dns",     Some(args)) =>   dns::call(args),
         ("serve",   Some(args)) => serve::call(args),
