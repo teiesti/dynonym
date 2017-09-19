@@ -17,7 +17,8 @@ impl Provider {
 impl super::Provider for Provider {
     fn update(&self, domain: Domain, ip: IpAddr) -> Result<()> {
         // Find the zone name to update, i.e. SOA name
-        let origin = soa(&self.client, &domain);
+        let origin = soa(&self.client, &domain)
+            .chain_err(|| "Could not find zone for given domain")?;
 
         // Assemble the record
         let mut record = Record::new();
@@ -35,7 +36,8 @@ impl super::Provider for Provider {
         }
 
         // Send the update request
-        let result = self.client.append(record, origin, false).unwrap();    // TODO remove unwrap
+        let result = self.client.append(record, origin, false)
+            .chain_err(|| "Could not update given domain")?;
         assert_eq!(result.response_code(), ResponseCode::NoError);
 
         Ok(())
@@ -43,14 +45,13 @@ impl super::Provider for Provider {
 }
 
 #[inline]
-fn soa(client: &SyncClient, name: &Name) -> Name {
+fn soa(client: &SyncClient, name: &Name) -> Result<Name> {
     for name in
         (0..name.num_labels() + 1)
             .rev()
             .map(|x| name.trim_to(x as usize))
     {
-        // TODO remove unwrap
-        let response = client.query(&name, DNSClass::IN, RecordType::SOA).unwrap();
+        let response = client.query(&name, DNSClass::IN, RecordType::SOA)?;
         let record =
             response
                 .answers().iter()
@@ -64,7 +65,7 @@ fn soa(client: &SyncClient, name: &Name) -> Name {
         if let Some(record) = record {
             let soa = record.name().clone();
             assert!(soa.zone_of(&name));
-            return soa;
+            return Ok(soa);
         }
     }
     unreachable!()
