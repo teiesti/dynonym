@@ -1,3 +1,4 @@
+use config::*;
 use errors::*;
 
 use std::net::IpAddr::{self, V4, V6};
@@ -10,11 +11,11 @@ use trust_dns::udp::UdpClientConnection;
 
 pub struct Client {
     client: SyncClient,
+    ttl: u32,
 }
 
 impl Client {
-    // TODO Replace this method?!
-    pub fn simple(addr: SocketAddr) -> Result<Self> {
+    pub fn new(addr: SocketAddr, ttl: u32) -> Result<Self> {
         // Open a connection
         let conn = UdpClientConnection::new(addr)
             .chain_err(|| "Could not open a connection")?;
@@ -22,10 +23,18 @@ impl Client {
         // Create a new provider
         let provider = Self {
             client: SyncClient::new(conn),
+            ttl,
         };
 
         // Return
         Ok(provider)
+    }
+
+    pub fn from_config(config: &Config) -> Result<Self> {
+        Self::new(
+            config.dns.address,
+            config.dns.ttl,
+        )
     }
 
     pub fn update(&self, domain: Name, ip: IpAddr) -> Result<()> {
@@ -36,7 +45,7 @@ impl Client {
         // Assemble the record
         let mut record = Record::new();
         record.set_name(domain);
-        record.set_ttl(60); // TODO Take value from config!
+        record.set_ttl(self.ttl);
         match ip {
             V4(ipv4) => {
                 record.set_rr_type(RecordType::A);
