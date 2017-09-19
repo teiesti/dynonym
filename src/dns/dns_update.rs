@@ -2,16 +2,30 @@ use super::Domain;
 use errors::*;
 
 use std::net::IpAddr::{self, V4, V6};
+use std::net::SocketAddr;
 use trust_dns::client::{Client, SyncClient};
 use trust_dns::op::ResponseCode;
 use trust_dns::rr::{DNSClass, RData, Record, RecordType};
+use trust_dns::udp::UdpClientConnection;
 
 pub struct Provider {
     client: SyncClient,
 }
 
 impl Provider {
-    // TODO
+    pub fn simple(addr: SocketAddr) -> Result<Self> {
+        // Open a connection
+        let conn = UdpClientConnection::new(addr)
+            .chain_err(|| "Could not open a connection")?;
+
+        // Create a new provider
+        let provider = Self {
+            client: SyncClient::new(conn),
+        };
+
+        // Return
+        Ok(provider)
+    }
 
     #[inline]
     fn find_zone(&self, domain: &Domain) -> Result<Domain> {
