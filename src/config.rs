@@ -3,11 +3,14 @@ use errors::*;
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::prelude::*;
+use std::net::SocketAddr;
 use std::path::Path;
 use toml;
 
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Config {
+    pub http: HttpSetting,
+    pub dns: DnsSetting,
     pub users: HashMap<String, UserSetting>,
 }
 
@@ -48,6 +51,26 @@ impl Config {
     // TODO keep this method?
     pub fn user(&self, user: &str) -> Option<&UserSetting> {
         self.users.get(user)
+    }
+}
+
+#[derive(Debug, Default, Deserialize, Serialize)]
+pub struct HttpSetting {
+    // TODO currently unused
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct DnsSetting {
+    pub address: SocketAddr,
+    pub ttl: u32,
+}
+
+impl Default for DnsSetting {
+    fn default() -> Self {
+        Self {
+            address: "127.0.0.1:53".parse().unwrap(),
+            ttl: 60 /*sec*/,
+        }
     }
 }
 
