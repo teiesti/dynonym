@@ -4,6 +4,12 @@ use rocket::http::Status;
 use rocket::request::{self, FromRequest, Request};
 use std::net::{Ipv4Addr, Ipv6Addr};
 
+#[get("/dns/update?<update>")]
+pub fn update(creds: Credentials, update: Update) -> String {
+    // TODO use the data
+    format!("{:?}\n{:?}", creds, update)
+}
+
 #[derive(Debug)]
 pub struct Credentials {
     user: String,
@@ -43,13 +49,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for Credentials {
 
 #[derive(Debug, FromForm)]
 pub struct Update {
-    record: String,
-    a: Option<Ipv4Addr>,
-    aaaa: Option<Ipv6Addr>,
-}
-
-#[get("/dns/update?<update>")]
-pub fn update(creds: Credentials, update: Update) -> String {
-    // TODO use the data
-    format!("{:?}\n{:?}", creds, update)
+    domain: String,
+    ipv4: Option<Ipv4Addr>,
+    ipv6: Option<Ipv6Addr>,
 }

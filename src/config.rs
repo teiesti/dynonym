@@ -54,14 +54,14 @@ impl Config {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct UserSetting {
     pub password: Hash,
-    pub records: HashSet<String>,
+    pub domains: HashSet<String>,
 }
 
 impl UserSetting {
     pub fn with_password(pw: &str) -> Self {
         Self {
             password: pw.into(),
-            records: HashSet::new(),
+            domains: HashSet::new(),
         }
     }
 }

@@ -14,8 +14,8 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
                 .index(1)
         )
         .arg(
-            Arg::with_name("RECORD")
-                .help("Specifies the record name (aka domain name)")
+            Arg::with_name("DOMAIN")
+                .help("Specifies the domain name")
                 .required(true)
                 .index(2)
         )
