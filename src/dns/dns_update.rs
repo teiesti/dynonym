@@ -22,14 +22,14 @@ impl Provider {
         {
             let response = self.client.query(&domain, DNSClass::IN, RecordType::SOA)?;
             let record =
-            response
-            .answers().iter()
-            .chain(
                 response
-                .name_servers().iter()
-                .filter(|x| x.rr_type() == RecordType::SOA)
-            )
-            .next()
+                    .answers().iter()
+                    .chain(
+                        response
+                            .name_servers().iter()
+                            .filter(|x| x.rr_type() == RecordType::SOA)
+                    )
+                    .next()
             ;
             if let Some(record) = record {
                 let soa = record.name().clone();
