@@ -3,18 +3,17 @@ use errors::*;
 
 use std::net::IpAddr::{self, V4, V6};
 use std::net::SocketAddr;
-use trust_dns::client::Client as Client2;
-use trust_dns::client::SyncClient;
+use trust_dns::client::{Client, SyncClient};
 use trust_dns::op::ResponseCode;
 use trust_dns::rr::{DNSClass, Name, RData, Record, RecordType};
 use trust_dns::udp::UdpClientConnection;
 
-pub struct Client {
+pub struct Updater {
     client: SyncClient,
     ttl: u32,
 }
 
-impl Client {
+impl Updater {
     pub fn new(addr: SocketAddr, ttl: u32) -> Result<Self> {
         // Open a connection
         let conn = UdpClientConnection::new(addr)
