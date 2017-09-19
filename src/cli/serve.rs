@@ -8,7 +8,6 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
         .about("Starts the server")
 }
 
-pub fn call(_args: &ArgMatches, _config: Config) -> Result<()> {
-    ::http::serve();
-    Ok(())
+pub fn call(_args: &ArgMatches, config: Config) -> Result<()> {
+    ::http::serve(config)
 }

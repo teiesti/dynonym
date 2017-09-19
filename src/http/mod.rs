@@ -1,7 +1,14 @@
 pub mod errors;
 pub mod routes;
 
-pub fn serve() {
+use config::Config;
+use errors::*;
+
+pub fn serve(config: Config) -> Result<()> {
+    // Configure the provider managing DNS updates
+    let dns = (); // TODO
+
+    // Configure the HTTP server and start it
     ::rocket::ignite()
         .mount("/", routes![
             routes::dns::update,
@@ -17,5 +24,9 @@ pub fn serve() {
             errors::internal_server_error,
             errors::not_implemented,
         ])
+        .manage(config)
+        .manage(dns)
         .launch();
+
+    Ok(())
 }
