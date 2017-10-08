@@ -1,5 +1,15 @@
 //! Shared types (e.g. for IP address and domain name)
 
+/// A domain name
+///
+/// A `Domain` represents a domain name as used in the Domain Name System (DNS).
+///
+/// Warning: At the moment, a `Domain` is merely a tuple struct wrapping a `String`. The API even
+/// provides public access to the inner field. However, this is not considered to be stable and
+/// may change in the future without being considered to be a breaking change.
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct Domain(pub String);
+
 /// A salted and cryptographically hashed string
 ///
 /// A `Hash` represents a string that was salted and cryptographically hashed using the bcrypt
