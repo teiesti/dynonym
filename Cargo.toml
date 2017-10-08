@@ -1,6 +1,13 @@
 [package]
 name = "dynonym"
-version = "0.1.0"
+version = "0.1.0-dev"
 authors = ["Tobias Stolzmann <tobias.stolzmann@gmail.com>"]
+license = "MIT"
+keywords = ["dns", "ddns", "dyndns", "http", "server", "rocket"]
+categories = ["network-programming", "web-programming::http-server"]
+description = "A minimalistic HTTP server processing DDNS update requests"
+readme = "README.md"
+documentation = "https://docs.rs/dynonym"
+repository = "https://github.com/teiesti/dynonym"
 
 [dependencies]
