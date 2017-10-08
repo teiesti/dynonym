@@ -1,3 +1,4 @@
+extern crate bcrypt;
 #[macro_use] extern crate error_chain;
 
 pub mod cli;
