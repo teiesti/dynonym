@@ -7,7 +7,7 @@
 /// Warning: At the moment, a `Domain` is merely a tuple struct wrapping a `String`. The API even
 /// provides public access to the inner field. However, this is not considered to be stable and
 /// may change in the future without being considered to be a breaking change.
-#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct Domain(pub String);
 
 /// A salted and cryptographically hashed string
