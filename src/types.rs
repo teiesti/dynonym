@@ -28,7 +28,7 @@
 /// assert!( h.is("foo"));
 /// assert!(!h.is("bar"));
 /// ```
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Hash(String);
 
 impl Hash {
