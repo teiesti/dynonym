@@ -11,3 +11,7 @@ documentation = "https://docs.rs/dynonym"
 repository = "https://github.com/teiesti/dynonym"
 
 [dependencies]
+
+[[bin]]
+name = "dynonym"
+doc = false
