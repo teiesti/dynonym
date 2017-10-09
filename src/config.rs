@@ -202,3 +202,77 @@ impl DerefMut for Domains {
         &mut self.0
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn config_default() {
+        let config = Config::default();
+        assert!(config.users.is_empty());
+        // TODO test other fields
+    }
+
+    #[test]
+    fn config_add_one_user() {
+        // Create an empty config
+        let mut config = Config::default();
+        assert!(config.users.is_empty());
+        assert!(config.user("tobias").is_none());
+
+        // Add a user
+        config.users.add("tobias", "1234");
+        assert!(config.users.len() == 1);
+        assert!(config.user("tobias").is_some());
+        assert!(config.user("sebastian").is_none());
+    }
+
+    #[test]
+    fn config_add_two_users() {
+        // Create config with one user
+        let mut config = Config::default();
+        config.users.add("tobias", "1234");
+
+        // Add another user
+        config.users.add("sebastian", "4321");
+        assert!(config.users.len() == 2);
+        assert!(config.user("tobias").is_some());
+        assert!(config.user("sebastian").is_some());
+        assert!(config.user("stolzmann").is_none());
+    }
+
+    #[test]
+    fn config_add_existing_user() {
+        // Create config with one user
+        let mut config = Config::default();
+        config.users.add("tobias", "1234");
+
+        // Insert a user with the same name but different password
+        let old = config.users.add("tobias", "4321");
+        assert!(config.users.len() == 1);
+        assert!(config.user("tobias").unwrap().pw.is("4321"));
+        assert!(old.unwrap().pw.is("1234"));
+    }
+
+    #[test]
+    fn config_file() {
+        use tempfile::NamedTempFile;
+
+        // Create config
+        let mut config = Config::default();
+        config.users.add("tobias", "1234");
+        config.users.add("sebastian", "4321");
+
+        // Save
+        let file = NamedTempFile::new().unwrap();
+        let path = file.path();
+        config.store(path).unwrap();
+
+        // Load
+        let config = Config::load(path).unwrap();
+        assert!(config.users.len() == 2);
+        assert!(config.user("tobias").unwrap().pw.is("1234"));
+        assert!(config.user("sebastian").unwrap().pw.is("4321"));
+    }
+}
