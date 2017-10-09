@@ -52,8 +52,8 @@
 //! # use dynonym::config::Config;
 //! # let mut config = Config::default();
 //! # config.users.add("tobias", "s3cr3t");
-//! config.user("tobias").unwrap().domains.add("example.org");
-//! config.user("tobias").unwrap().domains.rm("example.org");
+//! config.user("tobias").unwrap().domains.add("example.org".parse().unwrap());
+//! config.user("tobias").unwrap().domains.rm(&"example.org".parse().unwrap());
 //! ```
 //!
 //! ## Load from and store into a configuration file
@@ -71,13 +71,14 @@ use types::{Domain, Hash};
 
 use std::collections::{HashMap, HashSet};
 use std::net::SocketAddr;
+use std::ops::{Deref, DerefMut};
 use std::path::Path;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Config {
-    pub http: HttpConfig,
-    pub dns: DnsConfig,
-    pub users: HashMap<String, UserConfig>,
+    pub http: Http,
+    pub dns: Dns,
+    pub users: Users,
 }
 
 impl Config {
@@ -89,7 +90,7 @@ impl Config {
         unimplemented!()
     }
 
-    pub fn user(&mut self, user: &str) -> Option<&mut UserConfig> {
+    pub fn user(&mut self, user: &str) -> Option<&mut User> {
         unimplemented!()
     }
 }
@@ -101,20 +102,88 @@ impl Default for Config {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct HttpConfig {
+pub struct Http {
     pub socket: SocketAddr,
     pub workers: u16,
     pub log_level: (), // TODO Find a good type!
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct DnsConfig {
+pub struct Dns {
     pub socket: SocketAddr,
     pub ttl: u32,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct UserConfig {
+pub struct Users(HashMap<String, User>);
+
+impl Users {
+    pub fn add<T: Into<String>>(&mut self, user: T, pw: &str) -> Option<String> {
+        unimplemented!()
+    }
+
+    pub fn rm(&mut self, user: &str) -> Option<String> {
+        unimplemented!()
+    }
+}
+
+impl Deref for Users {
+    type Target = HashMap<String, User>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for Users {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct User {
     pub pw: Hash,
-    pub domains: HashSet<Domain>,
+    pub domains: Domains,
+}
+
+impl User {
+    pub fn with_pw(pw: &str) -> Self {
+        Self {
+            pw: pw.into(),
+            domains: Domains::new(),
+        }
+    }
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Domains(HashSet<Domain>);
+
+impl Domains {
+    pub fn new() -> Self {
+        Domains(HashSet::new())
+    }
+
+    pub fn add(&mut self, domain: Domain) -> Option<Domain> {
+        unimplemented!()
+    }
+
+    pub fn rm(&mut self, domain: &Domain) -> Option<Domain> {
+        unimplemented!()
+    }
+}
+
+impl Deref for Domains {
+    type Target = HashSet<Domain>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for Domains {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
 }

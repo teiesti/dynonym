@@ -1,5 +1,7 @@
 //! Shared types (e.g. for IP address and domain name)
 
+use std::str::FromStr;
+
 /// A domain name
 ///
 /// A `Domain` represents a domain name as used in the Domain Name System (DNS).
@@ -9,6 +11,13 @@
 /// may change in the future without being considered to be a breaking change.
 #[derive(Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct Domain(pub String);
+
+impl FromStr for Domain {
+    type Err = ();
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(Domain(s.into()))
+    }
+}
 
 /// A salted and cryptographically hashed string
 ///
