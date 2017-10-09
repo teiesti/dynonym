@@ -43,7 +43,7 @@
 //! # let mut config = Config::default();
 //! # config.users.add("tobias", "o1d_s3cr3t");
 //! // Note: The user must exists!
-//! config.user("tobias").unwrap().pw = "s3cr3t".into();
+//! config.user_mut("tobias").unwrap().pw = "s3cr3t".into();
 //! assert!(config.user("tobias").unwrap().pw.is("s3cr3t"));
 //! ```
 //!
@@ -52,8 +52,8 @@
 //! # use dynonym::config::Config;
 //! # let mut config = Config::default();
 //! # config.users.add("tobias", "s3cr3t");
-//! config.user("tobias").unwrap().domains.add("example.org".parse().unwrap());
-//! config.user("tobias").unwrap().domains.rm(&"example.org".parse().unwrap());
+//! config.user_mut("tobias").unwrap().domains.add("example.org".parse().unwrap());
+//! config.user_mut("tobias").unwrap().domains.rm(&"example.org".parse().unwrap());
 //! ```
 //!
 //! ## Load from and store into a configuration file
@@ -90,7 +90,11 @@ impl Config {
         unimplemented!()
     }
 
-    pub fn user(&mut self, user: &str) -> Option<&mut User> {
+    pub fn user(&self, user: &str) -> Option<&User> {
+        self.users.get(user)
+    }
+
+    pub fn user_mut(&mut self, user: &str) -> Option<&mut User> {
         self.users.get_mut(user)
     }
 }
