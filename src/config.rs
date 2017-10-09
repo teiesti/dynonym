@@ -137,7 +137,7 @@ impl Default for Config {
             http: Http {
                 socket: "127.0.0.1:8053".parse().unwrap(),
                 workers: 4, // TODO Use 2*num_cpu!
-                log_level: (),
+                // log_level: (),
             },
             dns: Dns {
                 socket: "127.0.0.1:53".parse().unwrap(),
@@ -152,7 +152,7 @@ impl Default for Config {
 pub struct Http {
     pub socket: SocketAddr,
     pub workers: u16,
-    pub log_level: (), // TODO Find a good type!
+    // pub log_level: (), // TODO Find a good type!
 }
 
 #[derive(Debug, Deserialize, Serialize)]
