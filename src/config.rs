@@ -21,11 +21,11 @@
 //! ```
 //! # use dynonym::config::Config;
 //! # let mut config = Config::default();
-//! config.http.socket = "127.0.0.1::8080".parse().unwrap();
+//! config.http.socket = "127.0.0.1:8053".parse().unwrap();
 //! config.http.workers = 4;
 //! # // TODO config.http.log_level = ();
 //!
-//! config.dns.socket = "127.0.0.1::53".parse().unwrap();
+//! config.dns.socket = "127.0.0.1:53".parse().unwrap();
 //! config.dns.ttl = 60 /*sec*/;
 //! ```
 //!
@@ -91,13 +91,24 @@ impl Config {
     }
 
     pub fn user(&mut self, user: &str) -> Option<&mut User> {
-        unimplemented!()
+        self.users.get_mut(user)
     }
 }
 
 impl Default for Config {
     fn default() -> Self {
-        unimplemented!()
+        Config {
+            http: Http {
+                socket: "127.0.0.1:8053".parse().unwrap(),
+                workers: 4, // TODO Use 2*num_cpu!
+                log_level: (),
+            },
+            dns: Dns {
+                socket: "127.0.0.1:53".parse().unwrap(),
+                ttl: 60 /*sec*/,
+            },
+            users: Users::new(),
+        }
     }
 }
 
@@ -118,12 +129,16 @@ pub struct Dns {
 pub struct Users(HashMap<String, User>);
 
 impl Users {
-    pub fn add<T: Into<String>>(&mut self, user: T, pw: &str) -> Option<String> {
-        unimplemented!()
+    pub fn new() -> Self {
+        Users(HashMap::new())
     }
 
-    pub fn rm(&mut self, user: &str) -> Option<String> {
-        unimplemented!()
+    pub fn add<T: Into<String>>(&mut self, user: T, pw: &str) -> Option<User> {
+        self.insert(user.into(), User::with_pw(pw))
+    }
+
+    pub fn rm(&mut self, user: &str) -> Option<User> {
+        self.remove(user)
     }
 }
 
@@ -165,12 +180,12 @@ impl Domains {
         Domains(HashSet::new())
     }
 
-    pub fn add(&mut self, domain: Domain) -> Option<Domain> {
-        unimplemented!()
+    pub fn add(&mut self, domain: Domain) -> bool {
+        self.insert(domain)
     }
 
-    pub fn rm(&mut self, domain: &Domain) -> Option<Domain> {
-        unimplemented!()
+    pub fn rm(&mut self, domain: &Domain) -> bool {
+        self.remove(domain)
     }
 }
 
