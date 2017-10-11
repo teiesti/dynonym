@@ -4,6 +4,7 @@ use std::path::PathBuf;
 
 error_chain! {
     foreign_links {
+        Ctrlc(::ctrlc::Error)                   #[doc = "Error when setting up SIGINT handler"];
         Io(::std::io::Error)                    #[doc = "Error during IO"];
         TomlDe(::toml::de::Error)               #[doc = "Error when deserializing TOML"];
         TomlSer(::toml::ser::Error)             #[doc = "Error when serializing TOML"];
@@ -38,6 +39,26 @@ error_chain! {
         ConfigFileEncode(path: PathBuf) {
             description("Cannot encode config file")
             display("Cannot encode config file '{}'", path.display())
+        }
+
+        LockFileCreate(path: PathBuf) {
+            description("Cannot create lock file")
+            display("Cannot create lock file '{}'", path.display())
+        }
+
+        LockFileRemove(path: PathBuf) {
+            description("Cannot remove lock file")
+            display("Cannot remove lock file '{}'", path.display())
+        }
+
+        LockFileWrite(path: PathBuf) {
+            description("Cannot write lock file")
+            display("Cannot write lock file '{}'", path.display())
+        }
+
+        LockFileSetupSigintHandler {
+            description(
+                "Cannot create a handler that removes the lock file when receiving a SIGINT")
         }
     }
 }

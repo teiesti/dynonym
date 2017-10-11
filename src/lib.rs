@@ -1,5 +1,10 @@
+// `error_chain!` can recurse deeply
+#![recursion_limit="128"]
+
 extern crate bcrypt;
+extern crate ctrlc;
 #[macro_use] extern crate error_chain;
+extern crate libc;
 extern crate num_cpus;
 #[macro_use] extern crate serde_derive;
 #[cfg(test)] extern crate tempfile;
