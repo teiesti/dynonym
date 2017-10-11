@@ -27,8 +27,9 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
         .about(crate_description!())
 
         .global_setting(AppSettings::ColoredHelp)
-        .global_setting(AppSettings::GlobalVersion)
         .global_setting(AppSettings::DisableHelpSubcommand)
+        .global_setting(AppSettings::GlobalVersion)
+        .global_setting(AppSettings::InferSubcommands)
 
         .setting(AppSettings::SubcommandRequiredElseHelp)
 
