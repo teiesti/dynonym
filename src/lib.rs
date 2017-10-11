@@ -1,5 +1,6 @@
 extern crate bcrypt;
 #[macro_use] extern crate error_chain;
+extern crate num_cpus;
 #[macro_use] extern crate serde_derive;
 #[cfg(test)] extern crate tempfile;
 extern crate toml;

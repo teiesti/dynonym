@@ -136,7 +136,7 @@ impl Default for Config {
         Config {
             http: Http {
                 socket: "127.0.0.1:8053".parse().unwrap(),
-                workers: 4, // TODO Use 2*num_cpu!
+                workers: 2 * ::num_cpus::get() as u16,
                 // log_level: (),
             },
             dns: Dns {
