@@ -44,19 +44,20 @@ error_chain! {
 
 pub fn handle(err: &Error) -> ! {
     use std::io::Write;
+    use yansi::Paint;
+
     let stderr = &mut ::std::io::stderr();
     let errmsg = "Error writing to stderr";
 
-    // TODO print "error:" in red
-    writeln!(stderr, "error: {}", err).expect(errmsg);
+    writeln!(stderr, "{} {}", Paint::red("error:").bold(), err).expect(errmsg);
 
     for err in err.iter().skip(1) {
-        writeln!(stderr, "caused by: {}", err).expect(errmsg);
+        writeln!(stderr, "{} {}", Paint::blue("caused by:").bold(), err).expect(errmsg);
     }
 
     // The backtrace is not always generated. Try to run with `RUST_BACKTRACE=1`.
     if let Some(backtrace) = err.backtrace() {
-        writeln!(stderr, "backtrace: {:?}", backtrace).expect(errmsg);
+        writeln!(stderr, "{} {:?}", Paint::cyan("backtrace:").bold(), backtrace).expect(errmsg);
     }
 
     ::std::process::exit(1);

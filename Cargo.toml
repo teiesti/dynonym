@@ -17,6 +17,7 @@ num_cpus = "1"
 serde = "1"
 serde_derive = "1"
 toml = "0.4"
+yansi = "0.3"
 
 [dev-dependencies]
 tempfile = "2"
