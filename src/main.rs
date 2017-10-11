@@ -1,3 +1,5 @@
+extern crate dynonym;
+
 fn main() {
-    println!("Hello, world!");
+    dynonym::main()
 }

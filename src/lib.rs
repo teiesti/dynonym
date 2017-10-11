@@ -2,6 +2,7 @@
 #![recursion_limit="128"]
 
 extern crate bcrypt;
+#[macro_use] extern crate clap;
 extern crate ctrlc;
 #[macro_use] extern crate error_chain;
 extern crate libc;
@@ -18,3 +19,5 @@ pub mod errors;
 pub mod http;
 pub mod lock;
 pub mod types;
+
+pub use cli::main;
