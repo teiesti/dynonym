@@ -86,38 +86,34 @@ pub struct Config {
 
 impl Config {
     pub fn load<P: AsRef<Path>>(path: P) -> Result<Self> {
-        // TODO Use better error types!
-
         // Open the config file read-only
-        let mut file = File::open(path)
-            .chain_err(|| "Unable to open config file")?;
+        let mut file = File::open(&path)
+            .chain_err(|| ErrorKind::ConfigFileOpen(path.as_ref().to_owned()))?;
 
         // Read the config file
         let mut buf = String::new();
         file.read_to_string(&mut buf)
-            .chain_err(|| "Error while reading config file")?;
+            .chain_err(|| ErrorKind::ConfigFileRead(path.as_ref().to_owned()))?;
 
         // Decode configuration
         let config: Config = toml::from_str(buf.as_str())
-            .chain_err(|| "Could not decode config file")?;
+            .chain_err(|| ErrorKind::ConfigFileDecode(path.as_ref().to_owned()))?;
 
         Ok(config)
     }
 
     pub fn store<P: AsRef<Path>>(&self, path: P) -> Result<()> {
-        // TODO Use better error types!
-
         // Open the config file write-only, truncate it if it exists
-        let mut file = File::create(path)
-            .chain_err(|| "Could not open config file")?;
+        let mut file = File::create(&path)
+            .chain_err(|| ErrorKind::ConfigFileCreate(path.as_ref().to_owned()))?;
 
         // Encode configuration
         let buf = toml::to_string(&self)
-            .chain_err(|| "Could not encode config file")?;
+            .chain_err(|| ErrorKind::ConfigFileEncode(path.as_ref().to_owned()))?;
 
         // Write the config file
         file.write_all(buf.as_bytes())
-            .chain_err(|| "Error while writing config file")?;
+            .chain_err(|| ErrorKind::ConfigFileWrite(path.as_ref().to_owned()))?;
 
         Ok(())
     }

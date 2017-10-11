@@ -1,5 +1,7 @@
 //! Error types and handling
 
+use std::path::PathBuf;
+
 error_chain! {
     foreign_links {
         Io(::std::io::Error)                    #[doc = "Error during IO"];
@@ -8,7 +10,35 @@ error_chain! {
     }
 
     errors {
-        // own errors here
+        ConfigFileOpen(path: PathBuf) {
+            description("Cannot open config file")
+            display("Cannot open config file '{}'", path.display())
+        }
+
+        ConfigFileCreate(path: PathBuf) {
+            description("Cannot create config file")
+            display("Cannot create config file '{}'", path.display())
+        }
+
+        ConfigFileRead(path: PathBuf) {
+            description("Cannot read config file")
+            display("Cannot read config file '{}'", path.display())
+        }
+
+        ConfigFileWrite(path: PathBuf) {
+            description("Cannot write config file")
+            display("Cannot write config file '{}'", path.display())
+        }
+
+        ConfigFileDecode(path: PathBuf) {
+            description("Cannot decode config file")
+            display("Cannot decode config file '{}'", path.display())
+        }
+
+        ConfigFileEncode(path: PathBuf) {
+            description("Cannot encode config file")
+            display("Cannot encode config file '{}'", path.display())
+        }
     }
 }
 
