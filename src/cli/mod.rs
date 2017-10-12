@@ -42,19 +42,9 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
                 .help("Sets a custom config file")
                 .takes_value(true)
                 .default_value(
-                    concat!(crate_name!(), ".conf")
+                    concat!(crate_name!(), ".toml")
                 )
-        )
-        .arg(
-            Arg::with_name("lock")
-                .short("l")
-                .long("lock")
-                .value_name("FILE")
-                .help("Sets a custom lock file")
-                .takes_value(true)
-                .default_value(
-                    concat!(crate_name!(), ".lock")
-                )
+                .global(true)
         )
 
         .subcommand(configure::setup())
