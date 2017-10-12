@@ -1,15 +1,29 @@
+use config::Config;
 use types::Domain;
 
 use hyper::header::{Authorization, Basic, Header};
-use rocket::Outcome;
+use rocket::{Outcome, State};
 use rocket::http::Status;
+use rocket::response::Failure;
 use rocket::request::{self, FromRequest, Request};
 use std::net::{Ipv4Addr, Ipv6Addr};
 
 #[get("/dns/update?<update>")]
-pub fn update(creds: Credentials, update: Update) -> String {
-    // TODO use the data
-    format!("{:?}\n{:?}", creds, update)
+pub fn update(config: State<Config>, creds: Credentials, update: Update) -> Result<(), Failure> {
+    // TODO DEBUG
+    println!("{:#?}\n{:#?}\n{:#?}", config, creds, update);
+
+    // Verify the credentials
+    let user = config.user(&creds.user).ok_or(Failure(Status::Unauthorized))?;
+    if !user.pw.is(&creds.pw) {
+        return Err(Failure(Status::Unauthorized));
+    }
+
+    // Check the authorization
+    user.domains.get(&update.domain).ok_or(Failure(Status::Forbidden))?;
+
+    // Perform the update
+    Err(Failure(Status::NotImplemented))    // TODO
 }
 
 #[derive(Debug)]
