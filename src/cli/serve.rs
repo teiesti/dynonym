@@ -1,4 +1,6 @@
+use config::Config;
 use errors::*;
+use lock::Lock;
 
 use clap::{App, Arg, ArgMatches, SubCommand};
 
@@ -19,6 +21,23 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
         )
 }
 
-pub fn call(_args: &ArgMatches) -> Result<()> {
-    unimplemented!()
+pub fn call(args: &ArgMatches) -> Result<()> {
+    // Create a lock
+    // Note: The lock is auto-released when _lock goes out of scope!
+    let _lock = Lock::create(
+        args
+            .value_of("lock")
+            .unwrap()
+            .into()
+    )?.handle_sigint()?;
+
+    // Load config
+    let config = Config::load(
+        args
+            .value_of("config")
+            .unwrap()
+    )?;
+
+    // Start the server
+    ::http::serve(config)
 }

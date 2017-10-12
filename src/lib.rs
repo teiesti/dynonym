@@ -1,12 +1,15 @@
-// `error_chain!` can recurse deeply
-#![recursion_limit="128"]
+#![feature(custom_derive, plugin)]
+#![plugin(rocket_codegen)]
+#![recursion_limit="128"]   // `error_chain!` can recurse deeply
 
 extern crate bcrypt;
 #[macro_use] extern crate clap;
 extern crate ctrlc;
 #[macro_use] extern crate error_chain;
+extern crate hyper;
 extern crate libc;
 extern crate num_cpus;
+extern crate rocket;
 #[macro_use] extern crate serde_derive;
 #[cfg(test)] extern crate tempfile;
 extern crate toml;

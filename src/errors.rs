@@ -4,10 +4,12 @@ use std::path::PathBuf;
 
 error_chain! {
     foreign_links {
-        Ctrlc(::ctrlc::Error)                   #[doc = "Error when setting up SIGINT handler"];
-        Io(::std::io::Error)                    #[doc = "Error during IO"];
-        TomlDe(::toml::de::Error)               #[doc = "Error when deserializing TOML"];
-        TomlSer(::toml::ser::Error)             #[doc = "Error when serializing TOML"];
+        Ctrlc(::ctrlc::Error)           #[doc = "Error when setting up SIGINT handler"];
+        Io(::std::io::Error)            #[doc = "Error during IO"];
+        RocketConfig(::rocket::config::ConfigError)
+                                        #[doc = "Error when creating a Rocket configuration"];
+        TomlDe(::toml::de::Error)       #[doc = "Error when deserializing TOML"];
+        TomlSer(::toml::ser::Error)     #[doc = "Error when serializing TOML"];
     }
 
     errors {
@@ -39,6 +41,10 @@ error_chain! {
         ConfigFileEncode(path: PathBuf) {
             description("Cannot encode config file")
             display("Cannot encode config file '{}'", path.display())
+        }
+
+        HttpConfig {
+            description("Invalid HTTP configuration")
         }
 
         LockFileCreate(path: PathBuf) {
