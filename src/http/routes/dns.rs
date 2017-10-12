@@ -1,3 +1,5 @@
+use types::Domain;
+
 use hyper::header::{Authorization, Basic, Header};
 use rocket::Outcome;
 use rocket::http::Status;
@@ -49,7 +51,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for Credentials {
 
 #[derive(Debug, FromForm)]
 pub struct Update {
-    domain: String, // TODO Use types::Domain
+    domain: Domain,
     ipv4: Option<Ipv4Addr>,
     ipv6: Option<Ipv6Addr>,
 }

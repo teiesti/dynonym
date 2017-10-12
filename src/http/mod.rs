@@ -24,7 +24,7 @@ pub fn serve(config: Config) -> Result<()> {
     // Configure the HTTP server and start it
     ::rocket::custom(rocket_config, true)
         .mount("/", routes![
-            // routes::dns::update,
+            routes::dns::update,
             routes::ip,
             routes::port,
             routes::socket,

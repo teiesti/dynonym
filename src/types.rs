@@ -1,5 +1,7 @@
 //! Shared types (e.g. for IP address and domain name)
 
+use rocket::http::RawStr;
+use rocket::request::FromFormValue;
 use std::str::FromStr;
 
 /// A domain name
@@ -16,6 +18,15 @@ impl FromStr for Domain {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(Domain(s.into()))
+    }
+}
+
+impl<'v> FromFormValue<'v> for Domain {
+    type Error = &'v RawStr;
+
+    fn from_form_value(v: &'v RawStr) -> Result<Self, Self::Error> {
+        let inner = String::from_form_value(v)?;
+        Ok(Domain(inner))
     }
 }
 
