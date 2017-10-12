@@ -23,7 +23,15 @@ pub fn update(config: State<Config>, creds: Credentials, update: Update) -> Resu
     user.domains.get(&update.domain).ok_or(Failure(Status::Forbidden))?;
 
     // Perform the update
-    Err(Failure(Status::NotImplemented))    // TODO
+    let dns = ::dns::Updater::new(config.dns.socket, config.dns.ttl).unwrap();  // TODO rm unwrap!
+    if let Some(ipv4) = update.ipv4 {
+        dns.update(update.domain.clone(), ipv4.into()).unwrap();    // TODO rm unwrap!
+    }
+    if let Some(ipv6) = update.ipv6 {
+        dns.update(update.domain, ipv6.into()).unwrap();    // TODO rm unwrap!
+    }
+
+    Ok(())
 }
 
 #[derive(Debug)]

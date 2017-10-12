@@ -1,15 +1,19 @@
 //! Error types and handling
 
+use types::Domain;
+
+use std::net::{IpAddr, SocketAddr};
 use std::path::PathBuf;
 
 error_chain! {
     foreign_links {
-        Ctrlc(::ctrlc::Error)           #[doc = "Error when setting up SIGINT handler"];
-        Io(::std::io::Error)            #[doc = "Error during IO"];
+        Ctrlc(::ctrlc::Error)                   #[doc = "Error when setting up SIGINT handler"];
+        Dns(::trust_dns::error::ClientError)    #[doc = "Error during DNS operation"];
+        Io(::std::io::Error)                    #[doc = "Error during IO"];
         RocketConfig(::rocket::config::ConfigError)
-                                        #[doc = "Error when creating a Rocket configuration"];
-        TomlDe(::toml::de::Error)       #[doc = "Error when deserializing TOML"];
-        TomlSer(::toml::ser::Error)     #[doc = "Error when serializing TOML"];
+            #[doc = "Error when creating a Rocket configuration"];
+        TomlDe(::toml::de::Error)               #[doc = "Error when deserializing TOML"];
+        TomlSer(::toml::ser::Error)             #[doc = "Error when serializing TOML"];
     }
 
     errors {
@@ -41,6 +45,26 @@ error_chain! {
         ConfigFileEncode(path: PathBuf) {
             description("Cannot encode config file")
             display("Cannot encode config file '{}'", path.display())
+        }
+
+        DnsConnOpen(socket: SocketAddr) {
+            description("Cannot open a connection to the DNS server")
+            display("Cannot open a connection to the DNS server at '{}'", socket)
+        }
+
+        DnsConvertDomain(domain: Domain) {
+            description("Cannot convert domain into Trust DNS format")
+            display("Cannot convert domain '{}' into Trust DNS format", domain)
+        }
+
+        DnsFindZone(domain: Domain) {
+            description("Cannot find zone for domain")
+            display("Cannot find zone for domain '{}'", domain)
+        }
+
+        DnsUpdate(domain: Domain, ip: IpAddr) {
+            description("Cannot update domain with IP address")
+            display("Cannot update domain '{}' with IP address '{}'", domain, ip)
         }
 
         HttpConfig {

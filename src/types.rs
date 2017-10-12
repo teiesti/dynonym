@@ -2,7 +2,11 @@
 
 use rocket::http::RawStr;
 use rocket::request::FromFormValue;
+use std::convert::TryInto;
+use std::fmt::{self, Display, Formatter};
 use std::str::FromStr;
+use trust_dns::error::ParseError;
+use trust_dns::rr::domain::Name;
 
 /// A domain name
 ///
@@ -11,8 +15,14 @@ use std::str::FromStr;
 /// Warning: At the moment, a `Domain` is merely a tuple struct wrapping a `String`. The API even
 /// provides public access to the inner field. However, this is not considered to be stable and
 /// may change in the future without being considered to be a breaking change.
-#[derive(Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct Domain(pub String);
+
+impl Display for Domain {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+        self.0.fmt(f)
+    }
+}
 
 impl FromStr for Domain {
     type Err = ();
@@ -27,6 +37,13 @@ impl<'v> FromFormValue<'v> for Domain {
     fn from_form_value(v: &'v RawStr) -> Result<Self, Self::Error> {
         let inner = String::from_form_value(v)?;
         Ok(Domain(inner))
+    }
+}
+
+impl TryInto<Name> for Domain {
+    type Error = ParseError;
+    fn try_into(self) -> Result<Name, Self::Error> {
+        Name::parse(&self.0, None)
     }
 }
 

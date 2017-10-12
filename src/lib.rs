@@ -1,4 +1,4 @@
-#![feature(custom_derive, plugin)]
+#![feature(custom_derive, plugin, try_from)]
 #![plugin(rocket_codegen)]
 #![recursion_limit="128"]   // `error_chain!` can recurse deeply
 
@@ -13,6 +13,7 @@ extern crate rocket;
 #[macro_use] extern crate serde_derive;
 #[cfg(test)] extern crate tempfile;
 extern crate toml;
+extern crate trust_dns;
 extern crate yansi;
 
 pub mod cli;
