@@ -52,14 +52,21 @@ error_chain! {
             display("Cannot open a connection to the DNS server at '{}'", socket)
         }
 
-        DnsConvertDomain(domain: Domain) {
+        DnsDomainConvert(domain: Domain) {
             description("Cannot convert domain into Trust DNS format")
             display("Cannot convert domain '{}' into Trust DNS format", domain)
         }
 
-        DnsFindZone(domain: Domain) {
-            description("Cannot find zone for domain")
-            display("Cannot find zone for domain '{}'", domain)
+        DnsRecordCreate {
+            description("Cannot create resource record")
+        }
+
+        DnsRecordDelete {
+            description("Cannot delete resource record")
+        }
+
+        DnsRecordQuery {
+            description("Cannot query resource record")
         }
 
         DnsUpdate(domain: Domain, ip: IpAddr) {
