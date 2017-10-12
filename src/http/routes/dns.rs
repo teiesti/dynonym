@@ -17,7 +17,7 @@ pub struct Credentials {
 }
 
 impl<'a, 'r> FromRequest<'a, 'r> for Credentials {
-    type Error = ();
+    type Error = ();    // TODO May use a better error!
 
     fn from_request(req: &'a Request<'r>) -> request::Outcome<Self, Self::Error> {
         // Extract base64-encoded HTTP Authorization header, if existent
