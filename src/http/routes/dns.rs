@@ -10,9 +10,6 @@ use std::net::{Ipv4Addr, Ipv6Addr};
 
 #[get("/dns/update?<update>")]
 pub fn update(config: State<Config>, creds: Credentials, update: Update) -> Result<(), Failure> {
-    // TODO DEBUG
-    println!("{:#?}\n{:#?}\n{:#?}", config, creds, update);
-
     // Verify the credentials
     let user = config.user(&creds.user).ok_or(Failure(Status::Unauthorized))?;
     if !user.pw.is(&creds.pw) {
