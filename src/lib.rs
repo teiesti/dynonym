@@ -10,6 +10,7 @@ extern crate hyper;
 extern crate libc;
 extern crate num_cpus;
 extern crate rocket;
+extern crate rpassword;
 #[macro_use] extern crate serde_derive;
 #[cfg(test)] extern crate tempfile;
 extern crate toml;
