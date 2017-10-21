@@ -10,6 +10,9 @@ error_chain! {
         Ctrlc(::ctrlc::Error)                   #[doc = "Error when setting up SIGINT handler"];
         Dns(::trust_dns::error::ClientError)    #[doc = "Error during DNS operation"];
         Io(::std::io::Error)                    #[doc = "Error during IO"];
+        ParseInt(::std::num::ParseIntError)     #[doc = "Error when parsing an integer"];
+        ParseNetAddr(::std::net::AddrParseError)
+            #[doc = "Error when parsing an IP or socket address"];
         RocketConfig(::rocket::config::ConfigError)
             #[doc = "Error when creating a Rocket configuration"];
         TomlDe(::toml::de::Error)               #[doc = "Error when deserializing TOML"];
