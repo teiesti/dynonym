@@ -25,7 +25,7 @@ impl Display for Domain {
 }
 
 impl FromStr for Domain {
-    type Err = ();
+    type Err = &'static str; // TODO Use a proper error type when improving Domain!
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(Domain(s.into()))
     }
