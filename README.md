@@ -52,9 +52,7 @@ When a server instance is running, some routes are available via HTTP. A client 
 
 - `http://<user>:<pw>@<url>/dns/update?domain=<domain>&ipv4=<ipv4>&ipv6=<ipv6>`
 
-  Updates the given domain.
-
-  Returns
+  Updates the given domain. Returns
     - `200 OK` if the update was successful
     - `400 Bad Request` if any parameter (domain or IP address) has an invalid form
     - `401 Unauthorized` if the given credentials are wrong
