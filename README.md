@@ -8,9 +8,13 @@
 
 `dynonym` is written in [Rust][10] and built on top of [Rocket][20]. Its functionality is inspired by [No-IP][40] and [DynDNS][50].
 
+## Contributing
+
+I love to include contributions! Please feel free to open an issue or submit a pull request!
+
 ## License
 
-`dynonym` is distributed under the terms of the MIT license. See [LICENSE](LICENSE) for details.
+`dynonym` is distributed under the terms of the MIT license. See [LICENSE](LICENSE) for details!
 
 
 [10]: https://www.rust-lang.org/
