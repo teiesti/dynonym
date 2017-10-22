@@ -28,7 +28,7 @@ TODO
 
 - `dynonym configure dns --socket <ADDR>`
 
-  Specifies the socket address (IP address and port) of your DNS server. You will need to adjust these settings in order to get `dynonym` working.
+  Specifies the socket address (IP address and port) of your DNS server. You will need to adjust these settings in order to get `dynonym` working with your DNS server.
 
 - `dynonym configure users add <USER>`
 
