@@ -43,7 +43,7 @@ There are several ways to install `dynonym`:
    [crates.io][80] with `cargo install dynonym`.
 
 3. **From source**  
-   This method not recommended unless you want to make a contribution.
+   This method is not recommended unless you want to make a contribution.
    ```
    git clone https://github.com/teiesti/dynonym.git
    cd dynonym
