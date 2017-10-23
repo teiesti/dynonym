@@ -146,7 +146,7 @@ I love to include contributions! Please feel free to open an issue or submit a p
 [30]: https://rocket.rs/
 [40]: https://www.noip.com/
 [50]: https://dyn.com/remote-access/
-[55]: https://docs.rs/dynonym/
+[55]: https://docs.rs/dynonym
 [60]: https://www.rustup.rs/
 [70]: https://github.com/teiesti/dynonym/releases
 [80]: https://crates.io/
