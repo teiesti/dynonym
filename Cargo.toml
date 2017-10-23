@@ -10,6 +10,9 @@ readme = "README.md"
 documentation = "https://docs.rs/dynonym"
 repository = "https://github.com/teiesti/dynonym"
 
+[badges]
+travis-ci = { repository = "teiesti/dynonym" }
+
 [dependencies]
 bcrypt = "0.1"
 clap = "2"

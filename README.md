@@ -1,5 +1,22 @@
 # dynonym
 
+[![build]][travis]
+[![release]][github]
+[![crate]][crates.io]
+[![doc]][docs.rs]
+
+[build]: https://travis-ci.org/teiesti/dynonym.svg?branch=master
+[travis]: https://travis-ci.org/teiesti/dynonym
+
+[release]: https://img.shields.io/github/release/teiesti/dynonym.svg
+[github]: https://github.com/teiesti/dynonym/releases
+
+[crate]: https://img.shields.io/crates/v/dynonym.svg
+[crates.io]: https://crates.io/crates/dynonym
+
+[doc]: https://docs.rs/dynonym/badge.svg
+[docs.rs]: https://docs.rs/dynonym
+
 `dynonym` is a minimalistic HTTP server that manages dynamic DNS records. It operates on the edge
 between the Web and the Domain Name System, taking care of the following tasks:
 
