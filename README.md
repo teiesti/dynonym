@@ -39,7 +39,8 @@ There are several ways to install `dynonym`:
    Binaries are available for download [here][70].
 
 2. **From crates.io**  
-   Once you have Cargo installed, you can download, compile and install the latest version from [crates.io][80] with `cargo install dynonym`.
+   Once you have Cargo installed, you can download, compile and install the latest version from
+   [crates.io][80] with `cargo install dynonym`.
 
 3. **From source**  
    This method not recommended unless you want to make a contribution.
