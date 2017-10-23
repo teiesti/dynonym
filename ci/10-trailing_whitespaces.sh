@@ -1,7 +1,7 @@
 #!/bin/bash
 
 FOLDER="."
-FILES='.+\.\(md\|rs\|\sh\|toml\|txt\|yml\)'
+FILES='.+\.\(rs\|\sh\|toml\|txt\|yml\)'
 
 # Exit script on first error
 set -o errexit -o nounset
