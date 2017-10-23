@@ -5,10 +5,20 @@ between the Web and the Domain Name System, taking care of the following tasks:
 
 1. Listening for incoming update requests via HTTP.
 2. Verifying authentication and authorization.
-3. Forwarding the request to a DNS server using [RFC 2136][30].
+3. Forwarding the request to a DNS server using [RFC 2136][10].
 
-`dynonym` is written in [Rust][10] and built on top of [Rocket][20]. Its functionality is inspired
+`dynonym` is written in [Rust][20] and built on top of [Rocket][30]. Its functionality is inspired
 by [No-IP][40] and [DynDNS][50].
+
+While `dynonym` is mainly used as an application, it is nevertheless possible to integrate it in
+other projects as a library. Check out the [documentation][55] for details! (This README does
+solely care for the application!)
+
+## WARNING
+
+`dynonym` is currently under development. At the moment, there is no stable version! Since I prepare
+myself for the final release, even some parts of this README are flawed. I would highly recommend
+you to wait until I finish my work!
 
 ## Prerequisites
 
@@ -23,11 +33,25 @@ package manager. Consider using [`rustup`][60]!
 
 ## Installation
 
-TODO
+There are several ways to install `dynonym`:
+
+1. **Binaries**  
+   Binaries are available for download [here][70].
+
+2. **From crates.io**  
+   Once you have Cargo installed, you can download, compile and install the latest version from [crates.io][80] with `cargo install dynonym`.
+
+3. **From source**  
+   This method not recommended unless you want to make a contribution.
+   ```
+   git clone https://github.com/teiesti/dynonym.git
+   cd dynonym
+   cargo install
+   ```
 
 ## Configuration
 
-`dynonym` uses a TOML-encoded configuration file. While it is possible to write it by hand, it
+`dynonym` uses a TOML-encoded configuration file. While it is possible to write it by hand, it is
 easier to use the command line tool. The most important commands are listed below. In case you are
 searching for a more advanced feature not listed here, consider using `--help` in any context!
 
@@ -99,9 +123,12 @@ I love to include contributions! Please feel free to open an issue or submit a p
 `dynonym` is distributed under the terms of the MIT license. See [LICENSE](LICENSE) for details!
 
 
-[10]: https://www.rust-lang.org/
-[20]: https://rocket.rs/
-[30]: https://tools.ietf.org/html/rfc2136
+[10]: https://tools.ietf.org/html/rfc2136
+[20]: https://www.rust-lang.org/
+[30]: https://rocket.rs/
 [40]: https://www.noip.com/
 [50]: https://dyn.com/remote-access/
+[55]: https://docs.rs/dynonym/
 [60]: https://www.rustup.rs/
+[70]: https://github.com/teiesti/dynonym/releases
+[80]: https://crates.io/
