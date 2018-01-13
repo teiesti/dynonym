@@ -12,7 +12,7 @@ use trust_dns::rr::{DNSClass, Name, RData, Record, RecordType};
 use trust_dns::udp::UdpClientConnection;
 
 pub struct Updater {
-    client: SyncClient,
+    client: SyncClient<UdpClientConnection>,
     ttl: u32,
 }
 

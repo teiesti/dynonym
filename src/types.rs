@@ -5,8 +5,8 @@ use rocket::request::FromFormValue;
 use std::convert::TryInto;
 use std::fmt::{self, Display, Formatter};
 use std::str::FromStr;
-use trust_dns::error::ParseError;
 use trust_dns::rr::domain::Name;
+use trust_dns_proto::error::ProtoError;
 
 /// A domain name
 ///
@@ -41,7 +41,7 @@ impl<'v> FromFormValue<'v> for Domain {
 }
 
 impl TryInto<Name> for Domain {
-    type Error = ParseError;
+    type Error = ProtoError;
     fn try_into(self) -> Result<Name, Self::Error> {
         Name::parse(&self.0, None)
     }

@@ -15,6 +15,7 @@ extern crate rpassword;
 #[cfg(test)] extern crate tempfile;
 extern crate toml;
 extern crate trust_dns;
+extern crate trust_dns_proto;
 extern crate yansi;
 
 pub mod cli;
