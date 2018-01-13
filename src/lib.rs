@@ -1,6 +1,19 @@
-#![feature(custom_derive, plugin, try_from)]
+#![feature(
+    custom_derive,
+    plugin,
+    try_from,
+)]
 #![plugin(rocket_codegen)]
 #![recursion_limit="128"]   // `error_chain!` can recurse deeply
+#![warn(
+    // missing_docs,
+    trivial_casts,
+    trivial_numeric_casts,
+    unreachable_pub,
+    unused_extern_crates,
+    unused_import_braces,
+    unused_qualifications,
+)]
 
 extern crate bcrypt;
 #[macro_use] extern crate clap;
