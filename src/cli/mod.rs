@@ -1,4 +1,4 @@
-//! Command-line parsing and instruction assembly
+//! Command-line argument parsing and instruction assembly
 
 pub mod configure;
 pub mod serve;

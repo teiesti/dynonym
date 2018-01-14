@@ -1,4 +1,4 @@
-//! Shared types (e.g. for IP address and domain name)
+//! Shared types (e.g. for a domain name)
 
 use rocket::http::RawStr;
 use rocket::request::FromFormValue;
