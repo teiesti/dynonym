@@ -62,7 +62,7 @@
     try_from,
 )]
 #![plugin(rocket_codegen)]
-#![recursion_limit="128"]   // `error_chain!` can recurse deeply
+#![recursion_limit="256"]   // `error_chain!` can recurse deeply
 #![warn(
     // missing_docs,
     trivial_casts,
