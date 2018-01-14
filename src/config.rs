@@ -6,7 +6,7 @@
 //!
 //! Consider the following examples for the most common use cases:
 //!
-//! [`Config`]: struct.Config
+//! [`Config`]: struct.Config.html
 //!
 //! # Examples
 //!

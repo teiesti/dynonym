@@ -7,7 +7,7 @@
 //! guide. In that case, please have a look at the [README][readme] and consider using
 //! `dynonym --help`!
 //!
-//! [readme]: https://github.com/teiesti/dynonym
+//! [readme]: https://github.com/teiesti/dynonym#dynonym
 //!
 //! ## Usage
 //!
