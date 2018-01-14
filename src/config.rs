@@ -1,16 +1,22 @@
 //! Configuration file parsing
 //!
-//! This module provides configuration file parsing for dynonym. It implements the serialization
-//! and deserialization of the `dynonym.toml`. Any parameter is exposed within a syntax-sugared
-//! "tree of structs" with [`Config`] being the root.
+//! `dynonym` is configured using a TOML-encoded configuration file called `dynonym.toml`. This
+//! module implements routines for loading and storing that file, and for manipulating a
+//! configuration that is held in memory.
 //!
-//! Consider the following examples for the most common use cases:
+//! A [`Config`] is a configuration held in memory. It can be loaded from the filesystem and stored
+//! there. It provides an interface for manipulating any parameter. [`Config`] does not exhibit any
+//! parameter directly. In order to enhance neatness, parameters are grouped into categories which
+//! are then represented by other structs within a whole "tree of structs". [`Config`] is the
+//! tree's root.
 //!
 //! [`Config`]: struct.Config.html
 //!
 //! # Examples
 //!
-//! ## Get a default configuration
+//! Have a look at these examples to learn how the API works:
+//!
+//! ## Create a default configuration
 //! ```
 //! # use dynonym::config::Config;
 //! # #[allow(unused_variables)]
@@ -77,14 +83,25 @@ use std::ops::{Deref, DerefMut};
 use std::path::Path;
 use toml;
 
+/// An entire configuration for `dynonym` held in memory.
+///
+/// `Config` represents an entire configuration for `dynonym` held in memory. It is made out of
+/// parts that configure certain subsystem. A `Config` can be saved in a configuration file and
+/// restored from there.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Config {
+    /// The HTTP server configuration.
     pub http: Http,
+
+    /// The DNS update client configuration.
     pub dns: Dns,
+
+    /// The "set" of authorized users.
     pub users: Users,
 }
 
 impl Config {
+    /// Loads a configuration from file given a path.
     pub fn load<P: AsRef<Path>>(path: P) -> Result<Self> {
         // Open the config file read-only
         let mut file = File::open(&path)
@@ -102,6 +119,9 @@ impl Config {
         Ok(config)
     }
 
+    /// Stores a configuration into a file given a path.
+    ///
+    /// This method will truncate an existing file without asking!
     pub fn store<P: AsRef<Path>>(&self, path: P) -> Result<()> {
         // Open the config file write-only, truncate it if it exists
         let mut file = File::create(&path)
@@ -118,10 +138,12 @@ impl Config {
         Ok(())
     }
 
+    /// Provides immutable access to an authorized user given the name.
     pub fn user(&self, user: &str) -> Option<&User> {
         self.users.get(user)
     }
 
+    /// Provides mutable access to an authorized user given the name.
     pub fn user_mut(&mut self, user: &str) -> Option<&mut User> {
         self.users.get_mut(user)
     }
@@ -144,31 +166,47 @@ impl Default for Config {
     }
 }
 
+/// A configuration for the HTTP server.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Http {
+    /// The socket address (== IP address and port number).
     pub socket: SocketAddr,
+
+    /// The number of worker threads spinned up.
     pub workers: u16,
+
     // pub log_level: (), // TODO Find a good type!
 }
 
+/// A configuration for the DNS update client.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Dns {
+    /// The socket address (== IP address and port number).
     pub socket: SocketAddr,
+
+    /// The time-to-live used for any request.
     pub ttl: u32,
 }
 
+/// A mapping from users (== names) to settings (== passwords and lists of domains the user is
+/// authorized for).
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Users(HashMap<String, User>);
 
 impl Users {
+    /// Creates a new, empty mapping.
     pub fn new() -> Self {
         Users(HashMap::new())
     }
 
+    /// Adds new user with a given name and password and an empty list of authorized domains into
+    /// the mapping. If the given name is already mapped, the value is replaced. In that case, the
+    /// old value is returned.
     pub fn add<T: Into<String>>(&mut self, user: T, pw: &str) -> Option<User> {
         self.insert(user.into(), User::with_pw(pw))
     }
-
+    /// Removes an existing mapping given the user's name. In case the name was mapped, the old
+    /// value is returned.
     pub fn rm(&mut self, user: &str) -> Option<User> {
         self.remove(user)
     }
@@ -188,14 +226,18 @@ impl DerefMut for Users {
     }
 }
 
-
+/// A setting corresponding with a user.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct User {
+    /// The salted and cryptographically hashed password.
     pub pw: Hash,
+
+    /// A list of domains the user is authorized for.
     pub domains: Domains,
 }
 
 impl User {
+    /// Creates a new user setting with a given password and an empty list of authorized domains.
     pub fn with_pw(pw: &str) -> Self {
         Self {
             pw: pw.into(),
@@ -204,18 +246,22 @@ impl User {
     }
 }
 
+/// A set of domains a user is authorized for.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Domains(HashSet<Domain>);
 
 impl Domains {
+    /// Create a new, empty set of domains.
     pub fn new() -> Self {
         Domains(HashSet::new())
     }
 
+    /// Adds a given domain to the set.
     pub fn add(&mut self, domain: Domain) -> bool {
         self.insert(domain)
     }
 
+    /// Returns a given domain from the set.
     pub fn rm(&mut self, domain: &Domain) -> bool {
         self.remove(domain)
     }
