@@ -1,4 +1,11 @@
 //! Shared types (e.g. for a domain name)
+//!
+//! This module defines basic types, that are necessary throughout `dynonym` but unavailable in the
+//! [standard library][std]. Sometimes, equivalent types are present in third-party crates but we
+//! try to avoid them in order to provide a stable API. In case, the equivalent type is necessary
+//! to use the API of a dependency, this module provides a conversion.
+//!
+//! [std]: https://doc.rust-lang.org/std/
 
 use rocket::http::RawStr;
 use rocket::request::FromFormValue;
