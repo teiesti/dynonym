@@ -15,7 +15,7 @@ use std::str::FromStr;
 use trust_dns::rr::domain::Name;
 use trust_dns_proto::error::ProtoError;
 
-/// A domain name
+/// A domain name.
 ///
 /// A `Domain` represents a domain name as used in the Domain Name System (DNS).
 ///
@@ -54,7 +54,7 @@ impl TryInto<Name> for Domain {
     }
 }
 
-/// A salted and cryptographically hashed string
+/// A salted and cryptographically hashed string.
 ///
 /// A `Hash` represents a string that was salted and cryptographically hashed using the bcrypt
 /// algorithm. The salt is stored alongside the hash. A `Hash` is well suited to store encrypted
