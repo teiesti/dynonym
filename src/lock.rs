@@ -6,7 +6,6 @@ use std::fs::{OpenOptions, remove_file};
 use std::io::prelude::*;
 use std::path::PathBuf;
 
-#[derive(Clone)]
 pub struct Lock {
     path: PathBuf,
 }
@@ -35,7 +34,13 @@ impl Lock {
 
     pub fn handle_sigint(self) -> Result<Self> {
         // Create a clone
-        let twin = self.clone();
+        //
+        // WARNING: Do not derive Clone for Lock in order to simplify this operation since it is
+        // not a good idea to have a twin in the wild. The relation between a Lock and its lock
+        // file should be 1-to-1 because a lock -- when going out of scope -- removes the lock
+        // file. Having a clone will result in a runtime error as soon as the second lock goes out
+        // of scope and tries to remove the -- no longer existing -- lock file.
+        let twin = Lock { path: self.path.clone() };
 
         // Setup SIGINT handler
         // TODO Replace ctrlc by tokio-signal?!
