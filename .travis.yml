@@ -7,5 +7,4 @@ cache: cargo
 sudo: false
 git:
     depth: 1
-before_script: rustup component add clippy
 script: ci/run.sh
