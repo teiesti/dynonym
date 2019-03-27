@@ -1,0 +1,21 @@
+[package]
+name = "dynonym"
+version = "0.1.0-dev"
+authors = ["Tobias Stolzmann <tobias.stolzmann@gmail.com>"]
+license = "MIT"
+keywords = ["dns", "ddns", "dyndns", "http", "server"]
+categories = ["network-programming", "web-programming::http-server"]
+description = "A minimalistic HTTP server that manages dynamic DNS records"
+readme = "README.md"
+documentation = "https://docs.rs/dynonym"
+repository = "https://github.com/teiesti/dynonym"
+edition = "2018"
+
+[badges]
+travis-ci = { repository = "teiesti/dynonym" }
+
+[dependencies]
+
+[[bin]]
+name = "dynonym"
+doc = false
