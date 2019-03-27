@@ -95,12 +95,12 @@ ttl = 60
 
 [users]
 
-[users.jane]
-pw = "<some password hash>"
+[users.maja]
+pw = "$2y$12$WmMKjrv4TgDhzXeLirAhLu4ZNfesMhu6kIAwklq9DzNbuKCYoXeEy"
 domains = ["cerana.apis", "mellifera.apis"]
 
-[users.john]
-pw = "<some password hash>"
+[users.willi]
+pw = "$2y$12$vZey0./3YcFFOO720/PlyeURFUSRmGs5hVei8yHBIYV/QsSERXWku"
 domains = ["mellifera.apis"]
 ```
 
