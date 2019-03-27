@@ -9,6 +9,10 @@
     unused_qualifications,
 )]
 
+pub mod config;
+
 pub fn main() {
-    println!("Hello, world")
+    // TODO DEBUG
+    let config = config::Config::load("dynonym.toml.example");
+    println!("{:#?}", config)
 }
