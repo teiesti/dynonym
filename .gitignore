@@ -1,2 +1,4 @@
+dynonym.lock
+dynonym.toml
 /target/
 **/*.rs.bk
