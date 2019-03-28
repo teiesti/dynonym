@@ -106,7 +106,7 @@ domains = ["mellifera.apis"]
 
 ## Running the server
 
-Type `dynonym serve`!
+Type `dynonym`!
 
 This command will start the HTTP server and listen for incoming update requests. You can stop the
 server with `Ctrl+C`.

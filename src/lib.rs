@@ -9,16 +9,33 @@
     unused_qualifications,
 )]
 
+pub mod cli;
 pub mod config;
 pub mod error;
 pub mod lock;
 
+use crate::cli::Opt;
+use crate::config::Config;
 use crate::error::{Error, Log};
+use crate::lock::Lock;
+
+use structopt::StructOpt;
 
 pub fn try_main() -> Result<(), Error> {
-    // TODO DEBUG
-    let config = config::Config::load("dynonym.toml.example")?;
+    // Parse command line arguments
+    let opt = Opt::from_args();
+    println!("{:#?}", opt);
+
+    // Parse configuration file
+    let config = Config::load(opt.config)?;
     println!("{:#?}", config);
+
+    // Create a lock file
+    // Note: The lock is auto-released when _lock goes out of scope!
+    let _lock = Lock::create(opt.lock)?.handle_sigint()?;
+
+    // Start the server
+    // TODO
 
     Ok(())
 }
