@@ -16,6 +16,8 @@ travis-ci = { repository = "teiesti/dynonym" }
 
 [dependencies]
 bcrypt = "0.3"
+ctrlc = "3"
+libc = "0.2"
 serde = { version = "1", features = ["derive"] }
 toml = "0.5"
 yansi = "0.5"

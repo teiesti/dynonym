@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
-use std::error;
+use std::error::Error as StdError;
 use std::fmt;
 use std::fs::File;
 use std::io::prelude::*;
@@ -19,16 +19,16 @@ impl Config {
     pub fn load<P: AsRef<Path>>(path: P) -> Result<Self, Error> {
         // Open the config file read-only
         let mut file = File::open(&path)
-            .map_err(|_| Error::new(ErrorKind::Open, path.as_ref().to_owned()))?;
+            .map_err(|_| Error::Open(path.as_ref().to_owned()))?;
 
         // Read the config file
         let mut buf = String::new();
         file.read_to_string(&mut buf)
-            .map_err(|_| Error::new(ErrorKind::Read, path.as_ref().to_owned()))?;
+            .map_err(|_| Error::Read(path.as_ref().to_owned()))?;
 
         // Decode configuration
         let config: Config = toml::from_str(buf.as_str())
-            .map_err(|_| Error::new(ErrorKind::Decode, path.as_ref().to_owned()))?;
+            .map_err(|_| Error::Decode(path.as_ref().to_owned()))?;
 
         Ok(config)
     }
@@ -99,38 +99,23 @@ impl<'a> From<&'a str> for Hash {
 }
 
 #[derive(Debug)]
-pub struct Error {
-    kind: ErrorKind,
-    path: PathBuf,
-}
-
-impl Error {
-    pub fn new(kind: ErrorKind, path: PathBuf) -> Self {
-        Error {
-            kind,
-            path
-        }
-    }
+pub enum Error {
+    Open(PathBuf),
+    Read(PathBuf),
+    Decode(PathBuf),
 }
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match &self.kind {
-            ErrorKind::Open => write!(f, "config: cannot open `{}`", &self.path.display()),
-            ErrorKind::Read => write!(f, "config: cannot read `{}`", &self.path.display()),
-            ErrorKind::Decode => write!(f, "config: cannot decode `{}`", &self.path.display()),
+        match &self {
+            Error::Open(path) => write!(f, "cannot open `{}`", path.display()),
+            Error::Read(path) => write!(f, "cannot read `{}`", path.display()),
+            Error::Decode(path) => write!(f, "cannot decode `{}`", path.display()),
         }
     }
 }
 
-impl error::Error for Error {}
-
-#[derive(Debug)]
-pub enum ErrorKind {
-    Open,
-    Read,
-    Decode,
-}
+impl StdError for Error {}
 
 #[cfg(test)]
 mod tests {

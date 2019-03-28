@@ -10,9 +10,21 @@
 )]
 
 pub mod config;
+pub mod error;
+pub mod lock;
+
+use crate::error::{Error, Log};
+
+pub fn try_main() -> Result<(), Error> {
+    // TODO DEBUG
+    let config = config::Config::load("dynonym.toml.example")?;
+    println!("{:#?}", config);
+
+    Ok(())
+}
 
 pub fn main() {
-    // TODO DEBUG
-    let config = config::Config::load("dynonym.toml.example");
-    println!("{:#?}", config)
+    if let Err(err) = try_main() {
+        err.log().abort();
+    }
 }
