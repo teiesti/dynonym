@@ -119,37 +119,42 @@ specify the lock file with `--lock <FILE>`.
 ## Routes
 
 When a server instance is running, some routes are available via HTTP. A client may call these
-routes to interact with the server in order to gather necessary information or trigger a dynamic
-update. These are all currently available routes:
+routes to gather necessary information (like IP address and port) or instruct the server to update
+a dynamic resource record. The currently available routes are:
 
-- `http://<user>:<pw>@<host>/dns/update?name=<name>&a=<a>&aaaa=<aaaa>`
+- `PUT http://<user>:<pw>@<host>/rr/<owner>/<type>?rdata=<rdata>`
 
-  Updates the A and AAAA resource records for the given domain name.
+  Creates or replaces a resource record for the domain name `<owner>` with type `<type>`. The value
+  of the resource record will be `<rdata>`. The client needs to authenticate with username and
+  password.
+
+  To conform with HTTP semantics, the client should use the [HTTP PUT request method][90] when
+  calling this route. Anyway, in order the maintain compatibility with some clients, the server also accepts the [HTTP GET request method][100]
 
   Parameters
     - `<user>`: the user
     - `<pw>`: her password
     - `<host>`: the server's hostname (and port), as set in the configuration file
-    - `<name>`: the domain name to update
-    - `<a>`: the RDATA for the A record (aka IPv4 address)
-    - `<aaaa`: the RDATA for the AAAA record (aka IPv6 address)
+    - `<owner>`: the resource record's owner, aka the domain name
+    - `<type>`: the resource record's type, e.g. `A` for an IPv4 address or `AAAA` for an IPv6 address
+    - `<rdata>`: the resource record's rdata, e.g. the IP address
 
   Returns
-    - `200 OK` if the update was successful
-    - `400 Bad Request` if any parameter (domain or IP address) has an invalid form
+    - `201 Created` if the update was successful
+    - `400 Bad Request` if any parameter, e.g. a domain name or IP address, was invalid
     - `401 Unauthorized` if the given credentials are wrong
-    - `403 Forbidden` if the user is not authorized to change the given domain
+    - `403 Forbidden` if the user is not authorized to change the given resource record
     - `500 Internal Server Error` if the update failed for any other reason
 
-- `http://<host>/ip`
+- `GET http://<host>/ip`
 
   Returns the client's IP address.
 
-- `http://<host>/port`
+- `GET http://<host>/port`
 
   Return the client's port number.
 
-- `http://<host>/socket`
+- `GET http://<host>/socket`
 
   Return the client's socket address (IP address and port).
 
@@ -171,3 +176,5 @@ I love to include contributions! Please feel free to open an issue or submit a p
 [60]: https://www.rustup.rs/
 [70]: https://github.com/teiesti/dynonym/releases
 [80]: https://crates.io/
+[90]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT
+[100]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET
