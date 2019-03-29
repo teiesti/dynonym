@@ -5,6 +5,7 @@ use std::fmt;
 use std::fs::File;
 use std::io::prelude::*;
 use std::net::SocketAddr;
+use std::ops::{Deref, DerefMut};
 use std::path::{Path, PathBuf};
 use toml;
 
@@ -12,7 +13,7 @@ use toml;
 pub struct Config {
     pub http: Http,
     pub dns: Dns,
-    pub users: HashMap<String, User>,
+    pub users: Users,
 }
 
 impl Config {
@@ -43,6 +44,33 @@ pub struct Http {
 pub struct Dns {
     pub socket: SocketAddr,
     pub ttl: u32,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Users(HashMap<String, User>);
+
+impl Users {
+    pub fn authenticate(&self, user: &str, pw: &str) -> bool {
+        self.get(user).map(|user| user.pw.is(pw)).unwrap_or(false)
+    }
+
+    pub fn authorize(&self, user: &str, domain: &str) -> bool {
+        self.get(user).map(|user| user.domains.contains(domain)).unwrap_or(false)
+    }
+}
+
+impl Deref for Users {
+    type Target = HashMap<String, User>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for Users {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
 }
 
 #[derive(Debug, Deserialize, Serialize)]
