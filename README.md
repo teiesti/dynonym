@@ -140,7 +140,8 @@ The currently available routes are:
     - `<pw>`: her password
     - `<host>`: the server's hostname (and port), as set in the configuration file
     - `<owner>`: the resource record's owner, aka the domain name
-    - `<type>`: the resource record's type, e.g. `A` for an IPv4 address or `AAAA` for an IPv6 address
+    - `<type>`: the resource record's type, e.g. `A` for an IPv4 address or `AAAA` for an IPv6
+    address
     - `<rdata>`: the resource record's rdata, e.g. the IP address
 
   Returns
