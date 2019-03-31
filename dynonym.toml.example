@@ -8,9 +8,9 @@ ttl = 60
 [users]
 
 [users.maja]
-pw = "$2y$12$WmMKjrv4TgDhzXeLirAhLu4ZNfesMhu6kIAwklq9DzNbuKCYoXeEy"
+pw = "$2y$04$Zke5GculHfWqZYGMAhavv.o0UgO1cUeRn01Y.SuGK8g8hWvcX5CaW" # == "worker"
 domains = ["cerana.apis", "mellifera.apis"]
 
 [users.willi]
-pw = "$2y$12$vZey0./3YcFFOO720/PlyeURFUSRmGs5hVei8yHBIYV/QsSERXWku"
+pw = "$2y$04$p5aIQaSF4cgGgCsrxXNIoOFcCbQV4zhw4WoVZCBS/kJwmBu6UWL5i" # == "drone"
 domains = ["mellifera.apis"]

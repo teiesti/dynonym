@@ -12,13 +12,16 @@
 pub mod cli;
 pub mod config;
 pub mod error;
+pub mod http;
 pub mod lock;
 
 use crate::cli::Opt;
 use crate::config::Config;
 use crate::error::{Error, Log};
+use crate::http::serve;
 use crate::lock::Lock;
 
+use std::sync::Arc;
 use structopt::StructOpt;
 
 pub fn try_main() -> Result<(), Error> {
@@ -27,7 +30,7 @@ pub fn try_main() -> Result<(), Error> {
     println!("{:#?}", opt);
 
     // Parse configuration file
-    let config = Config::load(opt.config)?;
+    let config = Arc::new(Config::load(opt.config)?);
     println!("{:#?}", config);
 
     // Create a lock file
@@ -35,7 +38,7 @@ pub fn try_main() -> Result<(), Error> {
     let _lock = Lock::create(opt.lock)?.handle_sigint()?;
 
     // Start the server
-    // TODO
+    serve(config);
 
     Ok(())
 }

@@ -5,7 +5,7 @@ authors = ["Tobias Stolzmann <tobias.stolzmann@gmail.com>"]
 license = "MIT"
 keywords = ["dns", "ddns", "dyndns", "http", "server"]
 categories = ["network-programming", "web-programming::http-server"]
-description = "A minimalistic HTTP server that manages dynamic DNS records"
+description = "A minimalistic HTTP server that manages dynamic DNS resource records"
 readme = "README.md"
 documentation = "https://docs.rs/dynonym"
 repository = "https://github.com/teiesti/dynonym"
@@ -15,8 +15,10 @@ edition = "2018"
 travis-ci = { repository = "teiesti/dynonym" }
 
 [dependencies]
+base64 = "0.10"
 bcrypt = "0.3"
 ctrlc = "3"
+hyper = "0.12"
 libc = "0.2"
 serde = { version = "1", features = ["derive"] }
 structopt = "0.2"

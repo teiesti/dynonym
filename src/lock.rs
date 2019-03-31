@@ -89,6 +89,7 @@ impl Lock {
 
         // Setup SIGINT handler
         // TODO Replace ctrlc by tokio-signal?!
+        // TODO Do a graceful shutdown! -> hyper::server::Server::with_graceful_shutdown
         ::ctrlc::set_handler(move || {
             if let Err(err) = twin.release_ref() {
                 err.log().abort();

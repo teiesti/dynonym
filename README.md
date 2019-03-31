@@ -17,15 +17,15 @@
 [doc]: https://docs.rs/dynonym/badge.svg
 [docs.rs]: https://docs.rs/dynonym
 
-`dynonym` is a minimalistic HTTP server that manages dynamic DNS records. It operates on the edge
-between the Web and the Domain Name System, taking care of the following tasks:
+`dynonym` is a minimalistic HTTP server that manages dynamic DNS resource records. It operates on
+the edge between the Web and the Domain Name System, taking care of the following tasks:
 
 1. Listening for incoming update requests via HTTP.
 2. Verifying authentication and authorization.
 3. Forwarding the request to a DNS server using [RFC 2136][10].
 
-`dynonym` is written in [Rust][20] and built on top of [warp][30]. Its functionality is inspired by
-[No-IP][40] and [DynDNS][50].
+`dynonym` is written in [Rust][20] and built on top of [hyper][30]. Its functionality is inspired
+by [No-IP][40] and [DynDNS][50].
 
 While `dynonym` is mainly used as an application, it is nevertheless possible to integrate it in
 other projects as a library. Check out the [documentation][55] for details! (This README does
@@ -38,10 +38,11 @@ recommend you to wait until I finish my work!
 
 ## Prerequisites
 
-Using `dynonym` makes almost no sense without a DNS server that allows dynamic updates with
-[RFC 2136][30]. Although the server starts, the very basic update functionality will fail as soon as
-the first update request comes in. Therefore, it is recommended to setup your DNS server first.
-Doing this goes beyond the scope of this explanation! Look at the documentation of your DNS server!
+Running `dynonym` makes almost no sense without a DNS server that allows dynamic updates with
+[RFC 2136][30]. Even though `dynonym` does not crash if the DNS server is not responding, it won't
+be able to forward incoming update requests. Therefore, it is recommended to setup your DNS server
+first. Doing this goes beyond the scope of this explanation! Look at the documentation of your DNS
+server!
 
 If you want to compile `dynonym` from source, you will need the latest stable version of the Rust
 compiler and the Cargo package manager. Consider using [`rustup`][60]!
@@ -79,7 +80,7 @@ a different part of `dynonym`. Here is a complete list of all the settings:
 
 - `[users]`: A list of users
 
-  Each user is defined in subsection `[users.<user>]` where `<user>` is the username. A user can
+  Each user is defined in a subsection `[users.<user>]` where `<user>` is the username. A user can
   have settings:
   - `pw`: a bcrypt hash representing the user's password
   - `domains`: a list of domain names the user is authorized for
@@ -96,11 +97,11 @@ ttl = 60
 [users]
 
 [users.maja]
-pw = "$2y$12$WmMKjrv4TgDhzXeLirAhLu4ZNfesMhu6kIAwklq9DzNbuKCYoXeEy"
+pw = "$2y$04$Zke5GculHfWqZYGMAhavv.o0UgO1cUeRn01Y.SuGK8g8hWvcX5CaW" # == "worker"
 domains = ["cerana.apis", "mellifera.apis"]
 
 [users.willi]
-pw = "$2y$12$vZey0./3YcFFOO720/PlyeURFUSRmGs5hVei8yHBIYV/QsSERXWku"
+pw = "$2y$04$p5aIQaSF4cgGgCsrxXNIoOFcCbQV4zhw4WoVZCBS/kJwmBu6UWL5i" # == "drone"
 domains = ["mellifera.apis"]
 ```
 
@@ -118,18 +119,21 @@ specify the lock file with `--lock <FILE>`.
 
 ## Routes
 
-When a server instance is running, some routes are available via HTTP. A client may call these
-routes to gather necessary information (like IP address and port) or instruct the server to update
-a dynamic resource record. The currently available routes are:
+When `dynonym` is running, routes are available via HTTP. A client may call these routes to gather
+necessary information (like IP address and port) or instruct the server to update a dynamic resource
+record.
 
-- `PUT http://<user>:<pw>@<host>/rr/<owner>/<type>?rdata=<rdata>`
+All routes use the [HTTP GET request method][90] although some are not [safe][100]. Violating the
+HTTP semantics was a careful decision that wasn't easy. It was made because most clients do not
+support HTTP methods other than GET.
+
+The currently available routes are:
+
+- `http://<user>:<pw>@<host>/rr/<owner>/<type>?rdata=<rdata>`
 
   Creates or replaces a resource record for the domain name `<owner>` with type `<type>`. The value
   of the resource record will be `<rdata>`. The client needs to authenticate with username and
   password.
-
-  To conform with HTTP semantics, the client should use the [HTTP PUT request method][90] when
-  calling this route. Anyway, in order the maintain compatibility with some clients, the server also accepts the [HTTP GET request method][100]
 
   Parameters
     - `<user>`: the user
@@ -140,7 +144,7 @@ a dynamic resource record. The currently available routes are:
     - `<rdata>`: the resource record's rdata, e.g. the IP address
 
   Returns
-    - `201 Created` if the update was successful
+    - `200 OK` if the update was successful
     - `400 Bad Request` if any parameter, e.g. a domain name or IP address, was invalid
     - `401 Unauthorized` if the given credentials are wrong
     - `403 Forbidden` if the user is not authorized to change the given resource record
@@ -152,11 +156,11 @@ a dynamic resource record. The currently available routes are:
 
 - `GET http://<host>/port`
 
-  Return the client's port number.
+  Returns the client's port number.
 
 - `GET http://<host>/socket`
 
-  Return the client's socket address (IP address and port).
+  Returns the client's socket address (IP address and port).
 
 ## Contributing
 
@@ -169,12 +173,12 @@ I love to include contributions! Please feel free to open an issue or submit a p
 
 [10]: https://tools.ietf.org/html/rfc2136
 [20]: https://www.rust-lang.org/
-[30]: https://github.com/seanmonstar/warp
+[30]: https://hyper.rs/
 [40]: https://www.noip.com/
 [50]: https://dyn.com/remote-access/
 [55]: https://docs.rs/dynonym
 [60]: https://www.rustup.rs/
 [70]: https://github.com/teiesti/dynonym/releases
 [80]: https://crates.io/
-[90]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT
-[100]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET
+[90]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET
+[100]: https://developer.mozilla.org/en-US/docs/Glossary/Safe
